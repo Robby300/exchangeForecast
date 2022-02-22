@@ -1,6 +1,9 @@
 package com.exchangeForecast.domens;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.Locale;
 
 public class Rate {
     private LocalDate date;
@@ -40,7 +43,8 @@ public class Rate {
     @Override
     public String toString() {
         return "Rate{" +
-                "date=" + date +
+                "date=" + date.format(DateTimeFormatter.ISO_DATE) +
+                "date= " + date.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.forLanguageTag("Rus"))+
                 ", exchangeRate=" + exchangeRate +
                 ", currency=" + currency.getName() +
                 '}';
