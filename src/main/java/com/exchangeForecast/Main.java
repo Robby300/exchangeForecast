@@ -12,9 +12,7 @@ public class Main {
 
     public static void main(String[] args) throws FileNotFoundException {
 
-        while (true) {
-            userInterface.printUserInterface();
-            userInterface.listenCommand();
-        }
+            userInterface.initialize();
+
     }
 }

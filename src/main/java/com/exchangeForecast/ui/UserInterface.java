@@ -18,9 +18,16 @@ public class UserInterface {
     final CommandParser commandParser = new CommandParser();
     private final RatesParser ratesParser = new RatesParser();
 
+    public void initialize() {
+        while (true) {
+            printUserInterface();
+            listenCommand();
+        }
+    }
+
     public void printUserInterface() {
         System.out.println("Usage: rate <cdx> [period]");
-        System.out.println("Usage: exit\n");
+        System.out.println("Usage: exit");
         System.out.println("    cdx:\n" +
                 "       USD     <USD> [period]\n" +
                 "       TRY     <TRY> [period]\n" +
@@ -33,11 +40,12 @@ public class UserInterface {
     public void listenCommand() {
         Optional<Command> optionalCommand = commandParser.getCommand();
         if (optionalCommand.isPresent()) {
-            Command command = optionalCommand.get();
-            doCommand(command);
-        }
-        else {
-            throw new NotValidException("Не верная команда");
+            try {
+                Command command = optionalCommand.get();
+                doCommand(command);
+            } catch (NullPointerException e) {
+                System.err.println("Wrong command");
+            }
         }
     }
 
@@ -68,8 +76,9 @@ public class UserInterface {
             List<Rate> rates = service.forecastNextWeek(ratesByCDX);
             rates.stream().forEach(System.out::println);
         } else {
-            System.out.println("wrong period!");
+            System.err.println("wrong period!");
         }
     }
+
 
 }
