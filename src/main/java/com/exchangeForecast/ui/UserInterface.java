@@ -2,8 +2,6 @@ package com.exchangeForecast.ui;
 
 import com.exchangeForecast.domain.Command;
 import com.exchangeForecast.domain.Rate;
-import com.exchangeForecast.exceptions.NotValidException;
-import com.exchangeForecast.links.ExchangeRateLinks;
 import com.exchangeForecast.parsers.CommandParser;
 import com.exchangeForecast.parsers.RatesParser;
 import com.exchangeForecast.service.AverageForecastService;
@@ -60,7 +58,7 @@ public class UserInterface {
         if (command.getFirstCommand().equals("exit")) {
             System.out.println("GoodBye... See ya!");
             System.exit(0);
-        } 
+        }
     }
 
     private List<Rate> doSecondPartCommand(Command command) {
