@@ -14,6 +14,7 @@ public class Main {
 
         while (true) {
             userInterface.printUserInterface();
+            userInterface.listenCommand();
         }
     }
 }

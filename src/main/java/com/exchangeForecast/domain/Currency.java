@@ -1,13 +1,13 @@
 package com.exchangeForecast.domain;
 
-import com.exchangeForecast.exceptions.NotValidCurrencyException;
+import com.exchangeForecast.exceptions.NotValidException;
 
 import java.util.Arrays;
 
 public enum Currency {
     EUR("Евро"),
-    TRY("Лира"),
-    USD("Доллар");
+    TRY("Турецкая лира"),
+    USD("Доллар США");
 
     private final String name;
 
@@ -23,6 +23,6 @@ public enum Currency {
         return Arrays.stream(values())
                 .filter(currency -> currency.getName().equals(name))
                 .findFirst()
-                .orElseThrow(() -> new NotValidCurrencyException(name + " is not valid!"));
+                .orElseThrow(() -> new NotValidException(name + " is not valid!"));
     }
 }

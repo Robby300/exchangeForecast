@@ -10,7 +10,7 @@ public class AverageForecastService implements ForecastService {
     private static final int SAMPLE_SIZE = 7;
 
     @Override
-    public Rate forecastTomorrow(List<Rate> rates) {
+    public Rate forecastNextDay(List<Rate> rates) {
         Rate forecastRate;
         Double forecastExchangeRate = getLastWeekSubList(rates).stream()
                 .map(Rate::getExchangeRate)
@@ -28,9 +28,10 @@ public class AverageForecastService implements ForecastService {
     @Override
     public List<Rate> forecastNextWeek(List<Rate> rates) {
         List<Rate> forecastRates = getLastWeekSubList(rates);
-        for (int i = 0; i < 7; i++) {
-            Rate forecastRate = forecastTomorrow(forecastRates);
-            forecastRate.setDate(forecastRate.getDate().plusDays(i));
+        int i = 0;
+        while (forecastRates.get(6).getDate().equals(LocalDate.now().plusDays(SAMPLE_SIZE))) {
+            Rate forecastRate = forecastNextDay(forecastRates);
+            forecastRate.setDate(forecastRate.getDate().plusDays(++i));
             forecastRates.remove(0);
             forecastRates.add(forecastRate);
         }

@@ -12,7 +12,7 @@ public class LinearRegressionForecastService implements ForecastService{
     private double xybar = 0.0;
 
     @Override
-    public Rate forecastTomorrow(List<Rate> rates) {
+    public Rate forecastNextDay(List<Rate> rates) {
         int sampleSize = rates.size();
         int[] days;
         double[] exchangeRates;
@@ -59,7 +59,6 @@ public class LinearRegressionForecastService implements ForecastService{
         System.out.println("SSTO = " + yybar);
         System.out.println("SSE  = " + rss);
         System.out.println("SSR  = " + ssr);
-        //System.out.println(rates);
         System.out.println(rates.size());
         System.out.println(beta1 * 4958 + beta0);
         return new Rate();
