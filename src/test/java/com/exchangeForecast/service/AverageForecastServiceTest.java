@@ -1,6 +1,5 @@
 package com.exchangeForecast.service;
 
-import com.exchangeForecast.domain.Currency;
 import com.exchangeForecast.domain.Rate;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
