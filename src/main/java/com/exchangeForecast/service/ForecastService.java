@@ -1,9 +1,10 @@
 package com.exchangeForecast.service;
 
-import com.exchangeForecast.domens.Rate;
+import com.exchangeForecast.domain.Rate;
 
 import java.util.List;
 
 public interface ForecastService {
-    void forecastTomorrow(List<Rate> rates);
+    Rate forecastTomorrow(List<Rate> rates);
+    List<Rate> forecastNextWeek(List<Rate> rates);
 }

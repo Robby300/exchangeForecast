@@ -1,6 +1,6 @@
 package com.exchangeForecast.service;
 
-import com.exchangeForecast.domens.Rate;
+import com.exchangeForecast.domain.Rate;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,13 +12,13 @@ public class LinearRegressionForecastService implements ForecastService{
     private double xybar = 0.0;
 
     @Override
-    public void forecastTomorrow(List<Rate> rates) {
+    public Rate forecastTomorrow(List<Rate> rates) {
         int sampleSize = rates.size();
         int[] days;
         double[] exchangeRates;
 
         // first pass: read in data, compute xbar and ybar
-        double sumDays = 0.0, sumExchangeRates = 0.0, sumSquareDays = 0.0;
+        double sumDays, sumExchangeRates, sumSquareDays;
         days = IntStream.range(0, rates.size()).toArray();
         exchangeRates = rates.stream().mapToDouble(Rate::getExchangeRate).toArray();
         sumDays = Arrays.stream(days).sum();
@@ -62,6 +62,12 @@ public class LinearRegressionForecastService implements ForecastService{
         //System.out.println(rates);
         System.out.println(rates.size());
         System.out.println(beta1 * 4958 + beta0);
+        return new Rate();
+    }
+
+    @Override
+    public List<Rate> forecastNextWeek(List<Rate> rates) {
+        return null;
     }
 
     private void computeSummaryStatistics(int dataSize, int[] days, double[] exchangeRates, double xbar, double ybar) {

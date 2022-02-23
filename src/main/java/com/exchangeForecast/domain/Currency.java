@@ -1,4 +1,4 @@
-package com.exchangeForecast.domens;
+package com.exchangeForecast.domain;
 
 import com.exchangeForecast.exceptions.NotValidCurrencyException;
 
