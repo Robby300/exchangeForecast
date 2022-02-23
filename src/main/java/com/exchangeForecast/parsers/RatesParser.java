@@ -2,21 +2,20 @@ package com.exchangeForecast.parsers;
 
 import com.exchangeForecast.domain.Currency;
 import com.exchangeForecast.domain.Rate;
+import com.exchangeForecast.links.ExchangeRateLinks;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class RatesParser {
-
-    private static final String EURO_RATE_FILE = "src/main/resources/static/EUR_F01_02_2002_T01_02_2022.csv";
-    private static final String LIRA_RATE_FILE = "src/main/resources/static/TRY_F01_02_2002_T01_02_2022.csv";
-    private static final String USDOLLAR_RATE_FILE = "src/main/resources/static/USD_F01_02_2002_T01_02_2022.csv";
+    ExchangeRateLinks links = new ExchangeRateLinks();
 
     private Rate parseRateRow(String rateRow) {
         String[] rateParts = rateRow.split(";");
@@ -41,17 +40,14 @@ public class RatesParser {
     }
 
     public List<Rate> getRatesByCDX(String currency) {
-        List<Rate> rates = null;
         switch (currency) {
             case "EUR":
-                rates = getRatesFromFile(EURO_RATE_FILE);
-                break;
+                return getRatesFromFile(links.getEuroLink());
             case "TRY":
-                rates = getRatesFromFile(LIRA_RATE_FILE);
-                break;
+                return getRatesFromFile(links.getLiraLink());
             case "USD":
-                rates = getRatesFromFile(USDOLLAR_RATE_FILE);
+                return getRatesFromFile(links.getDollarLink());
         }
-        return rates;
+        return new ArrayList<>();
     }
 }

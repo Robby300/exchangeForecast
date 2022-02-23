@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public class UserInterface {
     private final ForecastService service = new AverageForecastService();
-    public final ExchangeRateLinks links = new ExchangeRateLinks();
+    //public final ExchangeRateLinks links = new ExchangeRateLinks();
     final CommandParser commandParser = new CommandParser();
     private final RatesParser ratesParser = new RatesParser();
 
@@ -31,10 +31,11 @@ public class UserInterface {
         System.out.println("    cdx:\n" +
                 "       USD     <USD> [period]\n" +
                 "       TRY     <TRY> [period]\n" +
-                "       EUR     <EUR> [period]\n");
+                "       EUR     <EUR> [period]");
         System.out.println("    period:\n" +
                 "       tomorrow    [tomorrow]\n" +
                 "       week        [week]");
+        System.out.println("Type your command");
     }
 
     public void listenCommand() {
@@ -74,7 +75,7 @@ public class UserInterface {
             System.out.println(service.forecastTomorrow(ratesByCDX));
         } else if (period.equals("week")) {
             List<Rate> rates = service.forecastNextWeek(ratesByCDX);
-            rates.stream().forEach(System.out::println);
+            rates.forEach(System.out::println);
         } else {
             System.err.println("wrong period!");
         }

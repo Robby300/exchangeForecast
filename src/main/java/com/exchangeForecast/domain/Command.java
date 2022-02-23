@@ -1,7 +1,7 @@
 package com.exchangeForecast.domain;
 
 public class Command {
-    private String firstCommand;
+    private final String firstCommand;
     private String cdx;
     private String period;
 
@@ -19,10 +19,6 @@ public class Command {
         return firstCommand;
     }
 
-    public void setFirstCommand(String firstCommand) {
-        this.firstCommand = firstCommand;
-    }
-
     public String getCdx() {
         return cdx;
     }
@@ -33,9 +29,5 @@ public class Command {
 
     public String getPeriod() {
         return period;
-    }
-
-    public void setPeriod(String period) {
-        this.period = period;
     }
 }

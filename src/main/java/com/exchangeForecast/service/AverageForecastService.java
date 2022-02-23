@@ -1,6 +1,5 @@
 package com.exchangeForecast.service;
 
-import com.exchangeForecast.domain.Currency;
 import com.exchangeForecast.domain.Rate;
 
 import java.time.LocalDate;
@@ -16,7 +15,7 @@ public class AverageForecastService implements ForecastService {
                 .map(Rate::getExchangeRate)
                 .reduce(Double::sum).map(sum -> sum / SAMPLE_SIZE).orElseThrow();
 
-         forecastRate = new Rate.Builder()
+        forecastRate = new Rate.Builder()
                 .date(rates.get(rates.size() - 1).getDate().plusDays(1))
                 .exchangeRate(forecastExchangeRate)
                 .currency(rates.get(0).getCurrency())

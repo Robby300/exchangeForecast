@@ -56,24 +56,12 @@ public class Rate {
         return date;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
     public double getExchangeRate() {
         return exchangeRate;
     }
 
-    public void setExchangeRate(double exchangeRate) {
-        this.exchangeRate = exchangeRate;
-    }
-
     public Currency getCurrency() {
         return currency;
-    }
-
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
     }
 
 
