@@ -14,7 +14,7 @@ public class AverageForecastService implements ForecastService {
         Rate forecastRate;
         Double forecastExchangeRate = getLastWeekSubList(rates).stream()
                 .map(Rate::getExchangeRate)
-                .reduce(Double::sum).map(sum -> sum / SAMPLE_SIZE).get();
+                .reduce(Double::sum).map(sum -> sum / SAMPLE_SIZE).orElseThrow();
 
          forecastRate = new Rate.Builder()
                 .date(LocalDate.now().plusDays(1))
@@ -29,7 +29,7 @@ public class AverageForecastService implements ForecastService {
     public List<Rate> forecastNextWeek(List<Rate> rates) {
         List<Rate> forecastRates = getLastWeekSubList(rates);
         int i = 0;
-        while (forecastRates.get(6).getDate().equals(LocalDate.now().plusDays(SAMPLE_SIZE))) {
+        while (!forecastRates.get(6).getDate().equals(LocalDate.now().plusDays(SAMPLE_SIZE + 1))) {
             Rate forecastRate = forecastNextDay(forecastRates);
             forecastRate.setDate(forecastRate.getDate().plusDays(++i));
             forecastRates.remove(0);
@@ -41,4 +41,6 @@ public class AverageForecastService implements ForecastService {
     private List<Rate> getLastWeekSubList(List<Rate> rates) {
         return rates.subList(rates.size() - SAMPLE_SIZE, rates.size());
     }
+
+    //public Rate forecastTomorrow(List<Rate> rates) {}
 }

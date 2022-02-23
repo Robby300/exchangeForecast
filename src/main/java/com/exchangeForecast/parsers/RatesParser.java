@@ -8,7 +8,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,7 +36,6 @@ public class RatesParser {
             rates = rateRows.stream().map(this::parseRateRow).collect(Collectors.toList());
         } catch (IOException e) {
             System.out.println("CSV файл недоступен.");
-            ;
         }
         return rates;
     }
@@ -47,10 +45,10 @@ public class RatesParser {
         switch (currency) {
             case "EUR":
                 rates = getRatesFromFile(EURO_RATE_FILE);
-            break;
+                break;
             case "TRY":
                 rates = getRatesFromFile(LIRA_RATE_FILE);
-            break;
+                break;
             case "USD":
                 rates = getRatesFromFile(USDOLLAR_RATE_FILE);
         }

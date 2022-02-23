@@ -9,7 +9,7 @@ public class CommandParser {
     private String firstCommand;
     private String cdx;
     private String period;
-    private Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
 
     private String[] splitForPArts() {
         String command = scanner.nextLine();
