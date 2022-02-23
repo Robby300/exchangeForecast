@@ -69,6 +69,11 @@ public class LinearRegressionForecastService implements ForecastService{
         return null;
     }
 
+    @Override
+    public Rate forecastTomorrow(List<Rate> rates) {
+        return null;
+    }
+
     private void computeSummaryStatistics(int dataSize, int[] days, double[] exchangeRates, double xbar, double ybar) {
         for (int i = 0; i < dataSize; i++) {
             xxbar += (days[i] - xbar) * (days[i] - xbar);

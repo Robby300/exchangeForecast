@@ -34,7 +34,7 @@ public class UserInterface {
                 "       EUR     <EUR> [period]\n");
         System.out.println("    period:\n" +
                 "       tomorrow    [tomorrow]\n" +
-                "       week        [week]\n");
+                "       week        [week]");
     }
 
     public void listenCommand() {
@@ -71,7 +71,7 @@ public class UserInterface {
     private void doThirdPartCommand(Command command, List<Rate> ratesByCDX) {
         String period = command.getPeriod();
         if (period.equals("tomorrow")) {
-            System.out.println(service.forecastNextDay(ratesByCDX));
+            System.out.println(service.forecastTomorrow(ratesByCDX));
         } else if (period.equals("week")) {
             List<Rate> rates = service.forecastNextWeek(ratesByCDX);
             rates.stream().forEach(System.out::println);

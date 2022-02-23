@@ -17,7 +17,7 @@ public class AverageForecastService implements ForecastService {
                 .reduce(Double::sum).map(sum -> sum / SAMPLE_SIZE).orElseThrow();
 
          forecastRate = new Rate.Builder()
-                .date(LocalDate.now().plusDays(1))
+                .date(rates.get(rates.size() - 1).getDate().plusDays(1))
                 .exchangeRate(forecastExchangeRate)
                 .currency(Currency.EUR)
                 .build();
@@ -28,19 +28,34 @@ public class AverageForecastService implements ForecastService {
     @Override
     public List<Rate> forecastNextWeek(List<Rate> rates) {
         List<Rate> forecastRates = getLastWeekSubList(rates);
-        int i = 0;
-        while (!forecastRates.get(6).getDate().equals(LocalDate.now().plusDays(SAMPLE_SIZE + 1))) {
+        while (notForecastRatesReachedTomorrow(forecastRates)) {
             Rate forecastRate = forecastNextDay(forecastRates);
-            forecastRate.setDate(forecastRate.getDate().plusDays(++i));
             forecastRates.remove(0);
             forecastRates.add(forecastRate);
         }
         return forecastRates;
     }
 
+    private boolean notForecastRatesReachedTomorrow(List<Rate> forecastRates) {
+        return !forecastRates.get(0).getDate().equals(LocalDate.now().plusDays(1));
+    }
+
+    private boolean notForecastRateReachedTomorrow(Rate forecastRate) {
+        return !forecastRate.getDate().equals(LocalDate.now().plusDays(1));
+    }
+
     private List<Rate> getLastWeekSubList(List<Rate> rates) {
         return rates.subList(rates.size() - SAMPLE_SIZE, rates.size());
     }
 
-    //public Rate forecastTomorrow(List<Rate> rates) {}
+    public Rate forecastTomorrow(List<Rate> rates) {
+        List<Rate> forecastRates = getLastWeekSubList(rates);
+        Rate forecastRate = forecastRates.get(SAMPLE_SIZE - 1);
+        while (notForecastRateReachedTomorrow(forecastRate)) {
+            forecastRate = forecastNextDay(forecastRates);
+            forecastRates.remove(0);
+            forecastRates.add(forecastRate);
+        }
+        return forecastRate;
+    }
 }
