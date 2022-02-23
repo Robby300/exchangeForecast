@@ -65,7 +65,8 @@ public class UserInterface {
         if (period.equals("tomorrow")) {
             System.out.println(service.forecastNextDay(ratesByCDX));
         } else if (period.equals("week")) {
-            System.out.println(service.forecastNextWeek(ratesByCDX));
+            List<Rate> rates = service.forecastNextWeek(ratesByCDX);
+            rates.stream().forEach(System.out::println);
         } else {
             System.out.println("wrong period!");
         }

@@ -80,6 +80,6 @@ public class Rate {
     @Override
     public String toString() {
         return date.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.ROOT) + " " +
-                date.format(formatter) + " " + exchangeRate + " " + currency.getName() + "\n";
+                date.format(formatter) + " - " + exchangeRate;
     }
 }
