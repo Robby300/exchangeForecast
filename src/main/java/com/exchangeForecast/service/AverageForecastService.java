@@ -19,7 +19,7 @@ public class AverageForecastService implements ForecastService {
          forecastRate = new Rate.Builder()
                 .date(rates.get(rates.size() - 1).getDate().plusDays(1))
                 .exchangeRate(forecastExchangeRate)
-                .currency(Currency.EUR)
+                .currency(rates.get(0).getCurrency())
                 .build();
 
         return forecastRate;
