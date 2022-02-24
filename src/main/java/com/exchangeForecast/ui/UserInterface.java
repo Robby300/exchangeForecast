@@ -12,7 +12,6 @@ import java.util.Optional;
 
 public class UserInterface {
     private final ForecastService service = new AverageForecastService();
-    //public final ExchangeRateLinks links = new ExchangeRateLinks();
     final CommandParser commandParser = new CommandParser();
     private final RatesParser ratesParser = new RatesParser();
 
@@ -44,6 +43,8 @@ public class UserInterface {
                 doCommand(command);
             } catch (NullPointerException e) {
                 System.err.println("Wrong command");
+            } catch (IndexOutOfBoundsException e) {
+                System.err.println("Wrong CDX");
             }
         }
     }
