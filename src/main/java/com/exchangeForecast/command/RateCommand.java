@@ -4,7 +4,6 @@ import com.exchangeForecast.cash.RatesCash;
 import com.exchangeForecast.domain.Currency;
 import com.exchangeForecast.domain.Rate;
 import com.exchangeForecast.exceptions.NotValidException;
-import com.exchangeForecast.parsers.RatesParser;
 import com.exchangeForecast.service.AverageForecastService;
 import com.exchangeForecast.service.ForecastService;
 
@@ -12,8 +11,8 @@ import java.util.List;
 
 public class RateCommand implements Command {
     private static final String COMMAND_NAME = "rate";
-    private Currency cdx;
-    private String period;
+    private final Currency cdx;
+    private final String period;
     private final RatesCash ratesCash = new RatesCash();
     private final ForecastService service = new AverageForecastService();
 

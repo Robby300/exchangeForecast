@@ -2,11 +2,8 @@ package com.exchangeForecast.parsers;
 
 import com.exchangeForecast.domain.Currency;
 import com.exchangeForecast.domain.Rate;
-import com.exchangeForecast.exceptions.NotValidException;
-import com.exchangeForecast.links.ExchangeRateLinks;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -17,7 +14,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class RatesParser {
-    ExchangeRateLinks links = new ExchangeRateLinks();
 
     private Rate parseRateRow(String rateRow) {
         String[] rateParts = rateRow.split(";");
@@ -40,5 +36,4 @@ public class RatesParser {
         }
         return rates;
     }
-
 }

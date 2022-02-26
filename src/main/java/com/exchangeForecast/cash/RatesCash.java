@@ -26,13 +26,12 @@ public class RatesCash {
             case EUR:
                 return getEurRates();
             case TRY:
-                return ratesParser.getRatesFromFile(links.getLiraLink());
+                return getTryRates();
             case USD:
-                return ratesParser.getRatesFromFile(links.getDollarLink());
+                return getUsdRates();
             default:
                 throw new NotValidException("CDX not found");
         }
-
     }
 
     public int getHash(String link) {
