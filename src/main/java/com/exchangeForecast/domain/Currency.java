@@ -29,13 +29,13 @@ public enum Currency {
         return Arrays.stream(values())
                 .filter(currency -> currency.getConsoleName().equals(consoleName))
                 .findFirst()
-                .orElseThrow(() -> new NotValidException(consoleName + " is not valid!"));
+                .orElseThrow(() -> new NotValidException(consoleName + " CDX is not valid!"));
     }
 
     public static Currency ofDbName(String dbName) {
         return Arrays.stream(values())
                 .filter(currency -> currency.getDbName().equals(dbName))
                 .findFirst()
-                .orElseThrow(() -> new NotValidException(dbName + " is not valid!"));
+                .orElseThrow(() -> new NotValidException(dbName + " CDX is not valid!"));
     }
 }

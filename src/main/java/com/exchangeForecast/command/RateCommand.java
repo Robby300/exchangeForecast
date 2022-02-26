@@ -1,7 +1,9 @@
 package com.exchangeForecast.command;
 
+import com.exchangeForecast.cash.RatesCash;
 import com.exchangeForecast.domain.Currency;
 import com.exchangeForecast.domain.Rate;
+import com.exchangeForecast.exceptions.NotValidException;
 import com.exchangeForecast.parsers.RatesParser;
 import com.exchangeForecast.service.AverageForecastService;
 import com.exchangeForecast.service.ForecastService;
@@ -12,7 +14,7 @@ public class RateCommand implements Command {
     private static final String COMMAND_NAME = "rate";
     private Currency cdx;
     private String period;
-    private final RatesParser ratesParser = new RatesParser();
+    private final RatesCash ratesCash = new RatesCash();
     private final ForecastService service = new AverageForecastService();
 
     public RateCommand(Builder builder) {
@@ -22,14 +24,14 @@ public class RateCommand implements Command {
 
     @Override
     public void execute() {
-        List<Rate> ratesByCDX = ratesParser.getRatesByCDX(cdx);
+        List<Rate> ratesByCDX = ratesCash.getRatesByCDX(cdx);
         if (period.equals("tomorrow")) {
             System.out.println(service.forecastTomorrow(ratesByCDX));
         } else if (period.equals("week")) {
             List<Rate> rates = service.forecastNextWeek(ratesByCDX);
             rates.forEach(System.out::println);
         } else {
-            System.err.println("wrong period!");
+            throw new NotValidException(period + " is a wrong period!");
         }
     }
 

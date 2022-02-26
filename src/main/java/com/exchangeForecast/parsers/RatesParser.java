@@ -6,6 +6,7 @@ import com.exchangeForecast.exceptions.NotValidException;
 import com.exchangeForecast.links.ExchangeRateLinks;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -27,7 +28,7 @@ public class RatesParser {
         return rate;
     }
 
-    private List<Rate> getRatesFromFile(String filePath) {
+    public List<Rate> getRatesFromFile(String filePath) {
         List<Rate> rates = null;
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
 
@@ -40,16 +41,4 @@ public class RatesParser {
         return rates;
     }
 
-    public List<Rate> getRatesByCDX(Currency currency) {
-        switch (currency) {
-            case EUR:
-                return getRatesFromFile(links.getEuroLink());
-            case TRY:
-                return getRatesFromFile(links.getLiraLink());
-            case USD:
-                return getRatesFromFile(links.getDollarLink());
-            default:
-                throw new NotValidException("CDX not found");
-        }
-    }
 }

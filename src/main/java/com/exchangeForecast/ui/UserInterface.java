@@ -1,19 +1,13 @@
 package com.exchangeForecast.ui;
 
 import com.exchangeForecast.command.Command;
-import com.exchangeForecast.command.RateCommand;
 import com.exchangeForecast.exceptions.NotValidException;
 import com.exchangeForecast.parsers.CommandParser;
-import com.exchangeForecast.parsers.RatesParser;
-import com.exchangeForecast.service.AverageForecastService;
-import com.exchangeForecast.service.ForecastService;
 
 import java.util.Optional;
 
 public class UserInterface {
-    private final ForecastService service = new AverageForecastService();
     final CommandParser commandParser = new CommandParser();
-    private final RatesParser ratesParser = new RatesParser();
 
     public void initialize() {
         printUserInterface();

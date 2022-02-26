@@ -4,6 +4,7 @@ import com.exchangeForecast.command.Command;
 import com.exchangeForecast.command.RateCommand;
 import com.exchangeForecast.command.ExitRateCommand;
 import com.exchangeForecast.domain.Currency;
+import com.exchangeForecast.exceptions.NotValidException;
 
 import java.util.Optional;
 import java.util.Scanner;
@@ -29,8 +30,7 @@ public class CommandParser {
                     .cdx(Currency.ofConsoleName(cdx))
                     .period(period)
                     .build();
-        }
+        } else throw new NotValidException(commandName + "commandName not founded");
         return Optional.of(command);
     }
-
 }
