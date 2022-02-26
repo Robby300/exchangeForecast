@@ -1,13 +1,13 @@
 package com.exchangeForecast.ui;
 
-import com.exchangeForecast.domain.Command;
-import com.exchangeForecast.domain.Rate;
+import com.exchangeForecast.command.Command;
+import com.exchangeForecast.command.RateCommand;
+import com.exchangeForecast.exceptions.NotValidException;
 import com.exchangeForecast.parsers.CommandParser;
 import com.exchangeForecast.parsers.RatesParser;
 import com.exchangeForecast.service.AverageForecastService;
 import com.exchangeForecast.service.ForecastService;
 
-import java.util.List;
 import java.util.Optional;
 
 public class UserInterface {
@@ -16,9 +16,10 @@ public class UserInterface {
     private final RatesParser ratesParser = new RatesParser();
 
     public void initialize() {
+        printUserInterface();
         while (true) {
-            printUserInterface();
-            listenCommand();
+            Command command = listenCommand();
+            command.execute();
         }
     }
 
@@ -35,50 +36,8 @@ public class UserInterface {
         System.out.println("Type your command");
     }
 
-    public void listenCommand() {
+    public Command listenCommand() {
         Optional<Command> optionalCommand = commandParser.getCommand();
-        if (optionalCommand.isPresent()) {
-            try {
-                Command command = optionalCommand.get();
-                doCommand(command);
-            } catch (NullPointerException e) {
-                System.err.println("Wrong command");
-            } catch (IndexOutOfBoundsException e) {
-                System.err.println("Wrong CDX");
-            }
-        }
+        return optionalCommand.orElseThrow(() -> new NotValidException("Not valid command"));
     }
-
-    private void doCommand(Command command) {
-        doFirstPartCommand(command);
-        List<Rate> ratesByCDX = doSecondPartCommand(command);
-        doThirdPartCommand(command, ratesByCDX);
-    }
-
-    private void doFirstPartCommand(Command command) {
-        if (command.getFirstCommand().equals("exit")) {
-            System.out.println("GoodBye... See ya!");
-            System.exit(0);
-        }
-    }
-
-    private List<Rate> doSecondPartCommand(Command command) {
-        String cdx = command.getCdx();
-        List<Rate> ratesByCDX = ratesParser.getRatesByCDX(cdx);
-        return ratesByCDX;
-    }
-
-    private void doThirdPartCommand(Command command, List<Rate> ratesByCDX) {
-        String period = command.getPeriod();
-        if (period.equals("tomorrow")) {
-            System.out.println(service.forecastTomorrow(ratesByCDX));
-        } else if (period.equals("week")) {
-            List<Rate> rates = service.forecastNextWeek(ratesByCDX);
-            rates.forEach(System.out::println);
-        } else {
-            System.err.println("wrong period!");
-        }
-    }
-
-
 }

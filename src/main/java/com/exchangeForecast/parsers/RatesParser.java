@@ -2,14 +2,15 @@ package com.exchangeForecast.parsers;
 
 import com.exchangeForecast.domain.Currency;
 import com.exchangeForecast.domain.Rate;
+import com.exchangeForecast.exceptions.NotValidException;
 import com.exchangeForecast.links.ExchangeRateLinks;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,8 +22,8 @@ public class RatesParser {
         String[] rateParts = rateRow.split(";");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         Rate rate = new Rate(LocalDate.parse(rateParts[0], formatter),
-                Double.parseDouble(rateParts[1].replace(",", ".")),
-                Currency.of(rateParts[2]));
+                BigDecimal.valueOf(Double.parseDouble(rateParts[1].replace(",", "."))),
+                Currency.ofDbName(rateParts[2]));
         return rate;
     }
 
@@ -39,15 +40,16 @@ public class RatesParser {
         return rates;
     }
 
-    public List<Rate> getRatesByCDX(String currency) {
+    public List<Rate> getRatesByCDX(Currency currency) {
         switch (currency) {
-            case "EUR":
+            case EUR:
                 return getRatesFromFile(links.getEuroLink());
-            case "TRY":
+            case TRY:
                 return getRatesFromFile(links.getLiraLink());
-            case "USD":
+            case USD:
                 return getRatesFromFile(links.getDollarLink());
+            default:
+                throw new NotValidException("CDX not found");
         }
-        return new ArrayList<>();
     }
 }

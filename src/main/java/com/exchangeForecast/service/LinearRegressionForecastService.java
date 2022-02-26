@@ -6,8 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class LinearRegressionForecastService implements ForecastService{
-    private double xxbar = 0.0;
+public class LinearRegressionForecastService{
+    /*private double xxbar = 0.0;
     private double yybar = 0.0;
     private double xybar = 0.0;
 
@@ -82,5 +82,5 @@ public class LinearRegressionForecastService implements ForecastService{
         }
     }
 
-
+*/
 }

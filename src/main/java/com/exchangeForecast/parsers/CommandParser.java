@@ -1,6 +1,9 @@
 package com.exchangeForecast.parsers;
 
-import com.exchangeForecast.domain.Command;
+import com.exchangeForecast.command.Command;
+import com.exchangeForecast.command.RateCommand;
+import com.exchangeForecast.command.ExitRateCommand;
+import com.exchangeForecast.domain.Currency;
 
 import java.util.Optional;
 import java.util.Scanner;
@@ -16,15 +19,16 @@ public class CommandParser {
     public Optional<Command> getCommand() {
         Command command = null;
         String[] commandParts = splitForPArts();
-        String firstCommand;
-        if (commandParts.length == 1) {
-            firstCommand = commandParts[0];
-            command = new Command(firstCommand);
-        } else if (commandParts.length == 3) {
-            firstCommand = commandParts[0];
+        String commandName = commandParts[0];
+        if (commandName.equals("exit")) {
+            command = new ExitRateCommand();
+        } else if (commandName.equals("rate")) {
             String cdx = commandParts[1];
             String period = commandParts[2];
-            command = new Command(firstCommand, cdx, period);
+            command = new RateCommand.Builder()
+                    .cdx(Currency.ofConsoleName(cdx))
+                    .period(period)
+                    .build();
         }
         return Optional.of(command);
     }

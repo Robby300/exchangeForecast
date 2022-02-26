@@ -1,5 +1,6 @@
 package com.exchangeForecast.domain;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
@@ -7,12 +8,12 @@ import java.util.Locale;
 
 public class Rate {
     private LocalDate date;
-    private double exchangeRate;
+    private BigDecimal exchangeRate;
     private Currency currency;
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
-    public Rate(LocalDate date, double exchangeRate, Currency currency) {
+    public Rate(LocalDate date, BigDecimal exchangeRate, Currency currency) {
         this.date = date;
         this.exchangeRate = exchangeRate;
         this.currency = currency;
@@ -23,13 +24,13 @@ public class Rate {
 
     public Rate(Builder builder) {
         this.date = builder.date;
-        this.exchangeRate = Math.round(builder.exchangeRate * 100) / 100D;
+        this.exchangeRate = builder.exchangeRate;
         this.currency = builder.currency;
     }
 
     public static class Builder {
         private LocalDate date;
-        private double exchangeRate;
+        private BigDecimal exchangeRate;
         private Currency currency;
 
         public Builder date(LocalDate date) {
@@ -37,7 +38,7 @@ public class Rate {
             return this;
         }
 
-        public Builder exchangeRate(double exchangeRate) {
+        public Builder exchangeRate(BigDecimal exchangeRate) {
             this.exchangeRate = exchangeRate;
             return this;
         }
@@ -56,7 +57,7 @@ public class Rate {
         return date;
     }
 
-    public double getExchangeRate() {
+    public BigDecimal getExchangeRate() {
         return exchangeRate;
     }
 

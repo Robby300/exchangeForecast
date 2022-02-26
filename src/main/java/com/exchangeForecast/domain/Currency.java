@@ -5,24 +5,37 @@ import com.exchangeForecast.exceptions.NotValidException;
 import java.util.Arrays;
 
 public enum Currency {
-    EUR("Евро"),
-    TRY("Турецкая лира"),
-    USD("Доллар США");
+    EUR("Евро", "EUR"),
+    TRY("Турецкая лира", "TRY"),
+    USD("Доллар США", "USD");
 
-    private final String name;
+    private final String DbName;
+    private final String ConsoleName;
 
-    public String getName() {
-        return name;
+    public String getDbName() {
+        return DbName;
     }
 
-    Currency(String name) {
-        this.name = name;
+    public String getConsoleName() {
+        return ConsoleName;
     }
 
-    public static Currency of(String name) {
+    Currency(String DbName, String consoleName) {
+        this.DbName = DbName;
+        ConsoleName = consoleName;
+    }
+
+    public static Currency ofConsoleName(String consoleName) {
         return Arrays.stream(values())
-                .filter(currency -> currency.getName().equals(name))
+                .filter(currency -> currency.getConsoleName().equals(consoleName))
                 .findFirst()
-                .orElseThrow(() -> new NotValidException(name + " is not valid!"));
+                .orElseThrow(() -> new NotValidException(consoleName + " is not valid!"));
+    }
+
+    public static Currency ofDbName(String dbName) {
+        return Arrays.stream(values())
+                .filter(currency -> currency.getDbName().equals(dbName))
+                .findFirst()
+                .orElseThrow(() -> new NotValidException(dbName + " is not valid!"));
     }
 }
