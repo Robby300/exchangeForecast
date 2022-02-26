@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.Locale;
+import java.util.Objects;
 
 public class Rate {
     private LocalDate date;
@@ -70,5 +71,18 @@ public class Rate {
     public String toString() {
         return date.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.ROOT) + " " +
                 date.format(formatter) + " - " + exchangeRate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Rate rate = (Rate) o;
+        return Objects.equals(date, rate.date) && Objects.equals(exchangeRate, rate.exchangeRate) && currency == rate.currency && Objects.equals(formatter, rate.formatter);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(date, exchangeRate, currency, formatter);
     }
 }

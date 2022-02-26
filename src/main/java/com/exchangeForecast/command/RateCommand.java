@@ -11,6 +11,7 @@ import java.util.List;
 
 public class RateCommand implements Command {
     private static final String COMMAND_NAME = "rate";
+
     private final Currency cdx;
     private final String period;
     private final RatesCash ratesCash = new RatesCash();

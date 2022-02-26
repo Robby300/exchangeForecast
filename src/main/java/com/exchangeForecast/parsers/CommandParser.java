@@ -2,7 +2,7 @@ package com.exchangeForecast.parsers;
 
 import com.exchangeForecast.command.Command;
 import com.exchangeForecast.command.RateCommand;
-import com.exchangeForecast.command.ExitRateCommand;
+import com.exchangeForecast.command.ExitCommand;
 import com.exchangeForecast.domain.Currency;
 import com.exchangeForecast.exceptions.NotValidException;
 
@@ -22,7 +22,7 @@ public class CommandParser {
         String[] commandParts = splitForPArts();
         String commandName = commandParts[0];
         if (commandName.equals("exit")) {
-            command = new ExitRateCommand();
+            command = new ExitCommand();
         } else if (commandName.equals("rate")) {
             String cdx = commandParts[1];
             String period = commandParts[2];

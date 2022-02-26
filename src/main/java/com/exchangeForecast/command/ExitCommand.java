@@ -1,6 +1,6 @@
 package com.exchangeForecast.command;
 
-public class ExitRateCommand implements Command {
+public class ExitCommand implements Command {
     private static final String COMMAND_NAME = "exit";
 
     @Override
