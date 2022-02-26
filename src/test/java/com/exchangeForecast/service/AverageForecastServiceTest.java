@@ -57,5 +57,4 @@ public class AverageForecastServiceTest {
         assertThat(forecastRate.getDate()).isEqualTo(LocalDate.now().plusDays(1));
         assertThat(forecastRate.getCurrency()).isEqualTo(USD);
     }
-
 }

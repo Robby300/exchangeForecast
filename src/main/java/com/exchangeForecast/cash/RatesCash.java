@@ -43,6 +43,7 @@ public class RatesCash {
         if (eurRates != null && eurFileHash == getHash(links.getEuroLink())) {
             return usdRates;
         }
+        eurFileHash = getHash(links.getEuroLink());
         eurRates = ratesParser.getRatesFromFile(links.getEuroLink());
         return eurRates;
     }
@@ -51,6 +52,7 @@ public class RatesCash {
         if (usdRates != null && usdFileHash == getHash(links.getDollarLink())) {
             return usdRates;
         }
+        usdFileHash = getHash(links.getDollarLink());
         usdRates = ratesParser.getRatesFromFile(links.getDollarLink());
         return usdRates;
     }
@@ -59,6 +61,7 @@ public class RatesCash {
         if (tryRates != null && tryFileHash == getHash(links.getLiraLink())) {
             return tryRates;
         }
+        tryFileHash = getHash(links.getLiraLink());
         tryRates = ratesParser.getRatesFromFile(links.getLiraLink());
         return tryRates;
     }
