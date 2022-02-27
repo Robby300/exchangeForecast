@@ -1,7 +1,6 @@
 package com.exchangeForecast.service;
 
 import com.exchangeForecast.domain.Rate;
-import com.exchangeForecast.exceptions.ForecastNotFound;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -18,14 +17,12 @@ public class AverageForecastService implements ForecastService {
                 .stream()
                 .map(Rate::getExchangeRate)
                 .reduce(BigDecimal::add).map(sum -> sum.divide(BigDecimal.valueOf(SAMPLE_SIZE), 2, RoundingMode.HALF_UP))
-                .get();
-        Rate forecastRate = new Rate
-                .Builder()
+                .orElseThrow();
+        return new Rate.Builder()
                 .date(rates.get(rates.size() - 1).getDate().plusDays(1))
                 .exchangeRate(forecastExchangeRate)
                 .currency(rates.get(0).getCurrency())
                 .build();
-        return forecastRate;
     }
 
     @Override

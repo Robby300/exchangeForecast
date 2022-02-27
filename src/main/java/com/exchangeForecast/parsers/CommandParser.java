@@ -2,10 +2,6 @@ package com.exchangeForecast.parsers;
 
 import com.exchangeForecast.command.Command;
 import com.exchangeForecast.command.CommandFactory;
-import com.exchangeForecast.command.RateCommandWeek;
-import com.exchangeForecast.command.ExitCommand;
-import com.exchangeForecast.domain.Currency;
-import com.exchangeForecast.exceptions.NotValidException;
 
 import java.util.Optional;
 import java.util.Scanner;

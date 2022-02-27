@@ -8,25 +8,22 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class Rate {
-    private LocalDate date;
-    private BigDecimal exchangeRate;
-    private Currency currency;
+    private final LocalDate date;
+    private final BigDecimal exchangeRate;
+    private final Currency currency;
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-
-    public Rate(LocalDate date, BigDecimal exchangeRate, Currency currency) {
-        this.date = date;
-        this.exchangeRate = exchangeRate;
-        this.currency = currency;
-    }
-
-    public Rate() {
-    }
 
     public Rate(Builder builder) {
         this.date = builder.date;
         this.exchangeRate = builder.exchangeRate;
         this.currency = builder.currency;
+    }
+
+    public Rate(LocalDate date, BigDecimal exchangeRate, Currency currency) {
+        this.date = date;
+        this.exchangeRate = exchangeRate;
+        this.currency = currency;
     }
 
     public static class Builder {

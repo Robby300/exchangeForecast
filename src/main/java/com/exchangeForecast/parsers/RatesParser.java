@@ -18,16 +18,16 @@ public class RatesParser {
     private Rate parseRateRow(String rateRow) {
         String[] rateParts = rateRow.split(";");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        Rate rate = new Rate(LocalDate.parse(rateParts[0], formatter),
-                BigDecimal.valueOf(Double.parseDouble(rateParts[1].replace(",", "."))),
-                Currency.ofDbName(rateParts[2]));
-        return rate;
+        return new Rate.Builder()
+                .date(LocalDate.parse(rateParts[0], formatter))
+                .exchangeRate(BigDecimal.valueOf(Double.parseDouble(rateParts[1].replace(",", "."))))
+                .currency(Currency.ofDbName(rateParts[2]))
+                .build();
     }
 
     public List<Rate> getRatesFromFile(String filePath) {
         List<Rate> rates = null;
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
-
             List<String> rateRows = bufferedReader.lines().skip(1).collect(Collectors.toList());
             Collections.reverse(rateRows);
             rates = rateRows.stream().map(this::parseRateRow).collect(Collectors.toList());
