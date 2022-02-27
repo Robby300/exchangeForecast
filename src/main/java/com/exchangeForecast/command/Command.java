@@ -1,5 +1,5 @@
 package com.exchangeForecast.command;
 
-public interface Command {
-    void execute();
+public abstract class Command {
+    public abstract void execute();
 }

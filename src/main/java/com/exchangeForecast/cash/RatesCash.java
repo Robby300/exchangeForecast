@@ -13,9 +13,9 @@ public class RatesCash {
     private final ExchangeRateLinks links = new ExchangeRateLinks();
     private final RatesParser ratesParser = new RatesParser();
 
-    private List<Rate> eurRates;
-    private List<Rate> usdRates;
-    private List<Rate> tryRates;
+    private static List<Rate> eurRates;
+    private static List<Rate> usdRates;
+    private static List<Rate> tryRates;
 
     private int eurFileHash = getHash(links.getEuroLink());
     private int usdFileHash = getHash(links.getDollarLink());
