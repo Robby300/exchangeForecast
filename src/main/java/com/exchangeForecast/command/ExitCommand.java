@@ -1,6 +1,6 @@
 package com.exchangeForecast.command;
 
-public class ExitCommand extends Command {
+public class ExitCommand implements Command {
 
     @Override
     public void execute() {

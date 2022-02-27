@@ -8,7 +8,7 @@ import com.exchangeForecast.service.ForecastService;
 
 import java.util.List;
 
-public class RateCommandTomorrow extends Command {
+public class RateCommandTomorrow implements Command {
 
     private final Currency cdx;
     private final RatesCash ratesCash = new RatesCash();
