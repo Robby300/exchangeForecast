@@ -11,7 +11,6 @@ import java.util.List;
 public class RateCommandWeek implements Command {
 
     private final Currency cdx;
-    private final RatesCash ratesCash = new RatesCash();
     private final ForecastService service = new AverageForecastService();
 
     public RateCommandWeek(Currency cdx) {
@@ -19,8 +18,8 @@ public class RateCommandWeek implements Command {
     }
 
     @Override
-    public void execute() {
-        List<Rate> ratesByCDX = ratesCash.getRatesByCDX(cdx);
+    public void execute(RatesCash cash) {
+        List<Rate> ratesByCDX = cash.getRatesByCDX(cdx);
         List<Rate> rates = service.forecastNextWeek(ratesByCDX);
         rates.forEach(System.out::println);
     }

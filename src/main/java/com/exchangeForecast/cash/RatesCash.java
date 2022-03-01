@@ -13,9 +13,9 @@ public class RatesCash {
     private final ExchangeRateLinks links = new ExchangeRateLinks();
     private final RatesParser ratesParser = new RatesParser();
 
-    private static List<Rate> eurRates;
-    private static List<Rate> usdRates;
-    private static List<Rate> tryRates;
+    private List<Rate> eurRates;
+    private List<Rate> usdRates;
+    private List<Rate> tryRates;
 
     private int eurFileHash = getHash(links.getEuroLink());
     private int usdFileHash = getHash(links.getDollarLink());
@@ -36,16 +36,19 @@ public class RatesCash {
 
     public List<Rate> getEurRates() {
         eurRates = getRatesByLinkAndHash(eurRates, eurFileHash, links.getEuroLink());
+        eurFileHash = getHash(links.getEuroLink());
         return eurRates;
     }
 
     public List<Rate> getUsdRates() {
         usdRates = getRatesByLinkAndHash(usdRates, usdFileHash, links.getDollarLink());
+        usdFileHash = getHash(links.getDollarLink());
         return usdRates;
     }
 
     public List<Rate> getTryRates() {
         tryRates = getRatesByLinkAndHash(tryRates, tryFileHash, links.getLiraLink());
+        tryFileHash = getHash(links.getDollarLink());
         return tryRates;
     }
 
@@ -53,7 +56,6 @@ public class RatesCash {
         if (currentRates != null && fileHash == getHash(link)) {
             return currentRates;
         }
-        fileHash = getHash(link);
         currentRates = ratesParser.getRatesFromFile(link);
         return currentRates;
     }

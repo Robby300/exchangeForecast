@@ -11,7 +11,7 @@ import java.util.List;
 public class RateCommandTomorrow implements Command {
 
     private final Currency cdx;
-    private final RatesCash ratesCash = new RatesCash();
+    //private final RatesCash ratesCash = new RatesCash();
     private final ForecastService service = new AverageForecastService();
 
     public RateCommandTomorrow(Currency cdx) {
@@ -19,8 +19,8 @@ public class RateCommandTomorrow implements Command {
     }
 
     @Override
-    public void execute() {
-        List<Rate> ratesByCDX = ratesCash.getRatesByCDX(cdx);
+    public void execute(RatesCash cash) {
+        List<Rate> ratesByCDX = cash.getRatesByCDX(cdx);
         System.out.println(service.forecastTomorrow(ratesByCDX));
     }
 }

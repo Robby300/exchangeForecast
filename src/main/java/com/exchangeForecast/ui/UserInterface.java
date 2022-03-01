@@ -1,19 +1,27 @@
 package com.exchangeForecast.ui;
 
+import com.exchangeForecast.cash.RatesCash;
 import com.exchangeForecast.command.Command;
 import com.exchangeForecast.exceptions.NotValidException;
 import com.exchangeForecast.parser.CommandParser;
+import org.apache.log4j.Logger;
 
 import java.util.Optional;
 
 public class UserInterface {
-    final CommandParser commandParser = new CommandParser();
+    Logger logger = Logger.getRootLogger();
+    RatesCash cash = new RatesCash();
+
+     private final CommandParser commandParser = new CommandParser();
 
     public void initialize() {
         printUserInterface();
         while (true) {
             Command command = listenCommand();
-            command.execute();
+            long before = System.nanoTime();
+            command.execute(cash);
+            long after = System.nanoTime();
+            logger.info("время выполнение команды в нс = " + (after - before));
         }
     }
 
