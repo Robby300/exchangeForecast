@@ -34,35 +34,32 @@ public class RatesCash {
         }
     }
 
-    public int getHash(String link) {
-        File file = new File(link);
-        return file.hashCode();
-    }
-
     public List<Rate> getEurRates() {
-        if (eurRates != null && eurFileHash == getHash(links.getEuroLink())) {
-            return usdRates;
-        }
-        eurFileHash = getHash(links.getEuroLink());
-        eurRates = ratesParser.getRatesFromFile(links.getEuroLink());
+        eurRates = getRatesByLinkAndHash(eurRates, eurFileHash, links.getEuroLink());
         return eurRates;
     }
 
     public List<Rate> getUsdRates() {
-        if (usdRates != null && usdFileHash == getHash(links.getDollarLink())) {
-            return usdRates;
-        }
-        usdFileHash = getHash(links.getDollarLink());
-        usdRates = ratesParser.getRatesFromFile(links.getDollarLink());
+        usdRates = getRatesByLinkAndHash(usdRates, usdFileHash, links.getDollarLink());
         return usdRates;
     }
 
     public List<Rate> getTryRates() {
-        if (tryRates != null && tryFileHash == getHash(links.getLiraLink())) {
-            return tryRates;
-        }
-        tryFileHash = getHash(links.getLiraLink());
-        tryRates = ratesParser.getRatesFromFile(links.getLiraLink());
+        tryRates = getRatesByLinkAndHash(tryRates, tryFileHash, links.getLiraLink());
         return tryRates;
+    }
+
+    private List<Rate> getRatesByLinkAndHash(List currentRates, int fileHash, String link) {
+        if (currentRates != null && fileHash == getHash(link)) {
+            return currentRates;
+        }
+        fileHash = getHash(link);
+        currentRates = ratesParser.getRatesFromFile(link);
+        return currentRates;
+    }
+
+    public int getHash(String link) {
+        File file = new File(link);
+        return file.hashCode();
     }
 }
