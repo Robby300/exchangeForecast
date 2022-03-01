@@ -1,4 +1,4 @@
-package com.exchangeForecast.links;
+package com.exchangeForecast.link;
 
 public class ExchangeRateLinks {
     static final String EURO_RATE_FILE = "src/main/resources/static/EUR_F01_02_2002_T01_02_2022.csv";

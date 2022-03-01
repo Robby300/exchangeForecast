@@ -2,7 +2,7 @@ package com.exchangeForecast.ui;
 
 import com.exchangeForecast.command.Command;
 import com.exchangeForecast.exceptions.NotValidException;
-import com.exchangeForecast.parsers.CommandParser;
+import com.exchangeForecast.parser.CommandParser;
 
 import java.util.Optional;
 

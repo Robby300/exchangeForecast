@@ -3,8 +3,8 @@ package com.exchangeForecast.cash;
 import com.exchangeForecast.domain.Currency;
 import com.exchangeForecast.domain.Rate;
 import com.exchangeForecast.exceptions.NotValidException;
-import com.exchangeForecast.links.ExchangeRateLinks;
-import com.exchangeForecast.parsers.RatesParser;
+import com.exchangeForecast.link.ExchangeRateLinks;
+import com.exchangeForecast.parser.RatesParser;
 
 import java.io.File;
 import java.util.List;

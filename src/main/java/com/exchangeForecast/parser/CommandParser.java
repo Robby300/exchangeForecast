@@ -1,4 +1,4 @@
-package com.exchangeForecast.parsers;
+package com.exchangeForecast.parser;
 
 import com.exchangeForecast.command.Command;
 import com.exchangeForecast.command.CommandFactory;

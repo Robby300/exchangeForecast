@@ -1,4 +1,4 @@
-package com.exchangeForecast.parsers;
+package com.exchangeForecast.parser;
 
 import com.exchangeForecast.domain.Currency;
 import com.exchangeForecast.domain.Rate;
