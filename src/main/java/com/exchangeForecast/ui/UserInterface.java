@@ -4,13 +4,14 @@ import com.exchangeForecast.cash.RatesCash;
 import com.exchangeForecast.command.Command;
 import com.exchangeForecast.exceptions.NotValidException;
 import com.exchangeForecast.parser.CommandParser;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
 public class UserInterface {
-    Logger logger = Logger.getRootLogger();
-    RatesCash cash = new RatesCash();
+    private static final Logger logger = LoggerFactory.getLogger(UserInterface.class);
+    private final RatesCash cash = new RatesCash();
 
      private final CommandParser commandParser = new CommandParser();
 
