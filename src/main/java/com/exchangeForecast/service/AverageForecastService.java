@@ -11,7 +11,6 @@ import java.util.function.Predicate;
 public class AverageForecastService implements ForecastService {
     private static final int SAMPLE_SIZE = 7;
 
-    @Override
     public Rate forecastNextDay(List<Rate> rates) {
         BigDecimal forecastExchangeRate = getLastWeekSubList(rates)
                 .stream()

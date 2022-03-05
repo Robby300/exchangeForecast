@@ -21,8 +21,7 @@ public class RatesParser {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         return new Rate.Builder()
                 .date(LocalDate.parse(rateParts[1], formatter))
-                .exchangeRate(BigDecimal
-                        .valueOf(Double.parseDouble(rateParts[2].substring(1, rateParts[2].length() - 2).replace(",", ".")))
+                .exchangeRate(new BigDecimal(rateParts[2].substring(1, rateParts[2].length() - 2).replace(",", "."))
                         .divide(BigDecimal.valueOf(Double.parseDouble(rateParts[0]))))
                 .currency(Currency.ofDbName(rateParts[3]))
                 .build();

@@ -1,17 +1,24 @@
 package com.exchangeForecast.parser;
 
+import com.exchangeForecast.domain.Currency;
 import com.exchangeForecast.domain.Rate;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.*;
+import java.math.BigDecimal;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class RatesParserTest {
 
     @Test
     public void shouldParseRateRow() {
         RatesParser ratesParser = new RatesParser();
-        String rateRow = "1;12.02.2022;\"74,9867\";ƒÓÎÎ‡ —ÿ¿";
+        String rateRow = "10;26.02.2022;\"59,4030\";–¢—É—Ä–µ—Ü–∫–∞—è –ª–∏—Ä–∞";
         Rate rate = ratesParser.parseRateRow(rateRow);
-        System.out.println(rate);
+
+        assertThat(rate.getExchangeRate())
+                .isEqualTo(BigDecimal.valueOf(5.94030));
+        assertThat(rate.getCurrency()).isEqualTo(Currency.TRY);
+
     }
 }

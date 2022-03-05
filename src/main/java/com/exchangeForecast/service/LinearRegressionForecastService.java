@@ -2,12 +2,18 @@ package com.exchangeForecast.service;
 
 import com.exchangeForecast.domain.Rate;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 
-public class LinearRegressionForecastService{
-    /*private double xxbar = 0.0;
+import static java.math.BigDecimal.*;
+
+public class LinearRegressionForecastService implements ForecastService {
+    private static final int SAMPLE_SIZE = 7;
+    private double xxbar = 0.0;
     private double yybar = 0.0;
     private double xybar = 0.0;
 
@@ -20,7 +26,7 @@ public class LinearRegressionForecastService{
         // first pass: read in data, compute xbar and ybar
         double sumDays, sumExchangeRates, sumSquareDays;
         days = IntStream.range(0, rates.size()).toArray();
-        exchangeRates = rates.stream().mapToDouble(Rate::getExchangeRate).toArray();
+        exchangeRates = rates.stream().mapToDouble(rate -> rate.getExchangeRate().doubleValue()).toArray();
         sumDays = Arrays.stream(days).sum();
         sumSquareDays = Arrays.stream(days).map(day -> day * day).sum();
         sumExchangeRates = Arrays.stream(exchangeRates).sum();
@@ -29,7 +35,6 @@ public class LinearRegressionForecastService{
         double ybar = sumExchangeRates / sampleSize;
 
         // second pass: compute summary statistics
-
         computeSummaryStatistics(sampleSize, days, exchangeRates, xbar, ybar);
         double beta1 = xybar / xxbar;
         double beta0 = ybar - beta1 * xbar;
@@ -60,18 +65,32 @@ public class LinearRegressionForecastService{
         System.out.println("SSE  = " + rss);
         System.out.println("SSR  = " + ssr);
         System.out.println(rates.size());
-        System.out.println(beta1 * 4958 + beta0);
-        return new Rate();
+        //System.out.println(beta1 * rates.size() + beta0);
+        BigDecimal forecastExchangeRate = BigDecimal.valueOf(beta1 * rates.size() + beta0);
+        return new Rate.Builder()
+                .date(rates.get(rates.size() - 1).getDate().plusDays(1))
+                .exchangeRate(forecastExchangeRate)
+                .currency(rates.get(0).getCurrency())
+                .build();
     }
 
     @Override
     public List<Rate> forecastNextWeek(List<Rate> rates) {
-        return null;
+        if (isLastDateInRatesBeforeNextWeek(rates)) {
+            fillRatesWithForecastRate(notForecastRateReachedNextWeek, rates);
+        }
+        return getLastWeekSubList(rates);
     }
 
     @Override
     public Rate forecastTomorrow(List<Rate> rates) {
-        return null;
+        if (isLastDateInRatesBeforeTomorrow(rates)) {
+            return fillRatesWithForecastRate(notForecastRateReachedTomorrow, rates);
+        }
+        return rates.stream()
+                .filter(rate -> rate.getDate().equals(LocalDate.now().plusDays(1)))
+                .findFirst()
+                .orElseThrow();
     }
 
     private void computeSummaryStatistics(int dataSize, int[] days, double[] exchangeRates, double xbar, double ybar) {
@@ -82,5 +101,38 @@ public class LinearRegressionForecastService{
         }
     }
 
-*/
+    private final Predicate<List<Rate>> notForecastRateReachedTomorrow
+            = forecastRates -> !forecastRates
+            .get(forecastRates.size() - 1)
+            .getDate()
+            .equals(LocalDate.now().plusDays(1));
+
+    private final Predicate<List<Rate>> notForecastRateReachedNextWeek
+            = forecastRates -> !forecastRates
+            .get(forecastRates.size() - 1)
+            .getDate()
+            .equals(LocalDate.now().plusDays(7));
+
+    private List<Rate> getLastWeekSubList(List<Rate> rates) {
+        return rates.subList(rates.size() - SAMPLE_SIZE, rates.size());
+    }
+
+    private boolean isLastDateInRatesBeforeTomorrow(List<Rate> rates) {
+        return rates.get(rates.size() - 1).getDate().isBefore(LocalDate.now().plusDays(1));
+    }
+
+    private boolean isLastDateInRatesBeforeNextWeek(List<Rate> rates) {
+        return rates.get(rates.size() - 1).getDate().isBefore(LocalDate.now().plusDays(SAMPLE_SIZE));
+    }
+
+    private Rate fillRatesWithForecastRate(Predicate<List<Rate>> predicate, List<Rate> rates) {
+        Rate forecastRate = null;
+        while (predicate.test(rates)) {
+            List<Rate> lastWeekRates = getLastWeekSubList(rates);
+            forecastRate = forecastNextDay(lastWeekRates);
+            rates.add(forecastRate);
+        }
+        return forecastRate;
+    }
+
 }

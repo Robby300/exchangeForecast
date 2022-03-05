@@ -5,13 +5,14 @@ import com.exchangeForecast.domain.Currency;
 import com.exchangeForecast.domain.Rate;
 import com.exchangeForecast.service.AverageForecastService;
 import com.exchangeForecast.service.ForecastService;
+import com.exchangeForecast.service.LinearRegressionForecastService;
 
 import java.util.List;
 
 public class RateCommandWeek implements Command {
 
     private final Currency cdx;
-    private final ForecastService service = new AverageForecastService();
+    private final ForecastService service = new LinearRegressionForecastService();
 
     public RateCommandWeek(Currency cdx) {
         this.cdx = cdx;

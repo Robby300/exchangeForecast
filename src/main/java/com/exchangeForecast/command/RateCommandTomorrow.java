@@ -5,6 +5,7 @@ import com.exchangeForecast.domain.Currency;
 import com.exchangeForecast.domain.Rate;
 import com.exchangeForecast.service.AverageForecastService;
 import com.exchangeForecast.service.ForecastService;
+import com.exchangeForecast.service.LinearRegressionForecastService;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public class RateCommandTomorrow implements Command {
 
     private final Currency cdx;
     //private final RatesCash ratesCash = new RatesCash();
-    private final ForecastService service = new AverageForecastService();
+    private final ForecastService service = new LinearRegressionForecastService();
 
     public RateCommandTomorrow(Currency cdx) {
         this.cdx = cdx;
