@@ -2,6 +2,7 @@ package com.exchangeForecast.parser;
 
 import com.exchangeForecast.domain.Currency;
 import com.exchangeForecast.domain.Rate;
+import com.exchangeForecast.exceptions.NotValidException;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -19,9 +20,11 @@ public class RatesParser {
         String[] rateParts = rateRow.split(";");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         return new Rate.Builder()
-                .date(LocalDate.parse(rateParts[0], formatter))
-                .exchangeRate(BigDecimal.valueOf(Double.parseDouble(rateParts[1].replace(",", "."))))
-                .currency(Currency.ofDbName(rateParts[2]))
+                .date(LocalDate.parse(rateParts[1], formatter))
+                .exchangeRate(BigDecimal
+                        .valueOf(Double.parseDouble(rateParts[2].substring(1, rateParts[2].length() - 2).replace(",", ".")))
+                        .divide(BigDecimal.valueOf(Double.parseDouble(rateParts[0]))))
+                .currency(Currency.ofDbName(rateParts[3]))
                 .build();
     }
 
@@ -32,7 +35,7 @@ public class RatesParser {
             Collections.reverse(rateRows);
             rates = rateRows.stream().map(this::parseRateRow).collect(Collectors.toList());
         } catch (IOException e) {
-            System.out.println("CSV файл недоступен.");
+            throw new NotValidException("CSV файл недоступен.");
         }
         return rates;
     }

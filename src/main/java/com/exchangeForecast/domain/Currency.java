@@ -7,7 +7,9 @@ import java.util.Arrays;
 public enum Currency {
     EUR("Евро", "EUR"),
     TRY("Турецкая лира", "TRY"),
-    USD("Доллар США", "USD");
+    USD("Доллар США", "USD"),
+    AMD("Армянский драм", "AMD"),
+    BGN("Болгарский лев", "BGN");
 
     private final String DbName;
     private final String ConsoleName;
@@ -22,7 +24,7 @@ public enum Currency {
 
     Currency(String DbName, String consoleName) {
         this.DbName = DbName;
-        ConsoleName = consoleName;
+        this.ConsoleName = consoleName;
     }
 
     public static Currency ofConsoleName(String consoleName) {

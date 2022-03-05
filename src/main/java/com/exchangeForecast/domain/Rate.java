@@ -27,6 +27,7 @@ public class Rate {
     }
 
     public static class Builder {
+        private int nominal;
         private LocalDate date;
         private BigDecimal exchangeRate;
         private Currency currency;

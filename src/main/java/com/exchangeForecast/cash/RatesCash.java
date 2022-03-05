@@ -16,10 +16,14 @@ public class RatesCash {
     private List<Rate> eurRates;
     private List<Rate> usdRates;
     private List<Rate> tryRates;
+    private List<Rate> bgnRates;
+    private List<Rate> amdRates;
 
-    private int eurFileHash = getHash(links.getEuroLink());
-    private int usdFileHash = getHash(links.getDollarLink());
-    private int tryFileHash = getHash(links.getLiraLink());
+    private int eurFileHash = getHash(links.getEurLink());
+    private int usdFileHash = getHash(links.getUsdLink());
+    private int tryFileHash = getHash(links.getTryLink());
+    private int amdFileHash = getHash(links.getAmdLink());
+    private int bgnFileHash = getHash(links.getBgnLink());
 
     public List<Rate> getRatesByCDX(Currency currency) {
         switch (currency) {
@@ -29,26 +33,42 @@ public class RatesCash {
                 return getTryRates();
             case USD:
                 return getUsdRates();
+            case AMD:
+                return getAmdRates();
+            case BGN:
+                return getBgnRates();
             default:
                 throw new NotValidException("CDX not found");
         }
     }
 
     public List<Rate> getEurRates() {
-        eurRates = getRatesByLinkAndHash(eurRates, eurFileHash, links.getEuroLink());
-        eurFileHash = getHash(links.getEuroLink());
+        eurRates = getRatesByLinkAndHash(eurRates, eurFileHash, links.getEurLink());
+        eurFileHash = getHash(links.getEurLink());
         return eurRates;
     }
 
     public List<Rate> getUsdRates() {
-        usdRates = getRatesByLinkAndHash(usdRates, usdFileHash, links.getDollarLink());
-        usdFileHash = getHash(links.getDollarLink());
+        usdRates = getRatesByLinkAndHash(usdRates, usdFileHash, links.getUsdLink());
+        usdFileHash = getHash(links.getUsdLink());
         return usdRates;
     }
 
     public List<Rate> getTryRates() {
-        tryRates = getRatesByLinkAndHash(tryRates, tryFileHash, links.getLiraLink());
-        tryFileHash = getHash(links.getDollarLink());
+        tryRates = getRatesByLinkAndHash(tryRates, tryFileHash, links.getTryLink());
+        tryFileHash = getHash(links.getTryLink());
+        return tryRates;
+    }
+
+    public List<Rate> getAmdRates() {
+        amdRates = getRatesByLinkAndHash(amdRates, amdFileHash, links.getAmdLink());
+        amdFileHash = getHash(links.getAmdLink());
+        return tryRates;
+    }
+
+    public List<Rate> getBgnRates() {
+        bgnRates = getRatesByLinkAndHash(bgnRates, bgnFileHash, links.getBgnLink());
+        bgnFileHash = getHash(links.getBgnLink());
         return tryRates;
     }
 

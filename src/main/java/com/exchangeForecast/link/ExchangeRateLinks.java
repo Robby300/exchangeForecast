@@ -1,19 +1,31 @@
 package com.exchangeForecast.link;
 
 public class ExchangeRateLinks {
-    static final String EURO_RATE_FILE = "src/main/resources/static/EUR_F01_02_2002_T01_02_2022.csv";
-    static final String LIRA_RATE_FILE = "src/main/resources/static/TRY_F01_02_2002_T01_02_2022.csv";
-    static final String DOLLAR_RATE_FILE = "src/main/resources/static/USD_F01_02_2002_T01_02_2022.csv";
+    static final String AMD_RATE_FILE = "files/AMD_F01_02_2005_T05_03_2022.csv";
+    static final String BGN_RATE_FILE = "files/BGN_F01_02_2005_T05_03_2022.csv";
+    static final String EUR_RATE_FILE = "files/EUR_F01_02_2005_T05_03_2022.csv";
+    static final String TRY_RATE_FILE = "files/TRY_F01_02_2005_T05_03_2022.csv";
+    static final String USD_RATE_FILE = "files/USD_F01_02_2005_T05_03_2022.csv";
 
-    public String getEuroLink() {
-        return EURO_RATE_FILE;
+    public String getAmdLink() {
+        return AMD_RATE_FILE;
     }
 
-    public String getLiraLink() {
-        return LIRA_RATE_FILE;
+    public String getBgnLink() {
+        return BGN_RATE_FILE;
     }
 
-    public String getDollarLink() {
-        return DOLLAR_RATE_FILE;
+    public String getEurLink() {
+        return EUR_RATE_FILE;
     }
+
+    public String getTryLink() {
+        return TRY_RATE_FILE;
+    }
+
+    public String getUsdLink() {
+        return USD_RATE_FILE;
+    }
+
+
 }
