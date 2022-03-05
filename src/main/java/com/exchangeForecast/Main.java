@@ -14,12 +14,16 @@ public class Main {
     private static final Map<String, String> getenv = System.getenv();
 
     public static void main(String[] args) {
-       /* try {
+       try {
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
-            botsApi.registerBot(new Bot(getenv.get("BOT_NAME"), getenv.get("BOT_TOKEN")));
+
+           //bot.username=test_robby300_bot
+           //bot.token=2067623158:AAGjETT5zTSEgJQqEojAvADITIMTsuRvmDI
+            botsApi.registerBot(new Bot("test_robby300_bot","2067623158:AAGjETT5zTSEgJQqEojAvADITIMTsuRvmDI", commandContainer));
+
         } catch (TelegramApiException e) {
             e.printStackTrace();
-        }*/
+        }
 
         userInterface.initialize();
     }

@@ -117,6 +117,10 @@ public class LinearRegressionForecastService implements ForecastService {
         return rates.subList(rates.size() - SAMPLE_SIZE, rates.size());
     }
 
+    private List<Rate> getLastMonthSubList(List<Rate> rates) {
+        return rates.subList(getIndexOfMonthBeforeRate(rates), rates.size());
+    }
+
     private boolean isLastDateInRatesBeforeTomorrow(List<Rate> rates) {
         return rates.get(rates.size() - 1).getDate().isBefore(LocalDate.now().plusDays(1));
     }
@@ -128,11 +132,19 @@ public class LinearRegressionForecastService implements ForecastService {
     private Rate fillRatesWithForecastRate(Predicate<List<Rate>> predicate, List<Rate> rates) {
         Rate forecastRate = null;
         while (predicate.test(rates)) {
-            List<Rate> lastWeekRates = getLastWeekSubList(rates);
-            forecastRate = forecastNextDay(lastWeekRates);
+            List<Rate> lastMonthRates = getLastMonthSubList(rates);
+            forecastRate = forecastNextDay(lastMonthRates);
             rates.add(forecastRate);
         }
         return forecastRate;
+    }
+
+    private int getIndexOfMonthBeforeRate(List<Rate> rates) {
+        Rate lastRate = rates.get(rates.size() - 1);
+        LocalDate lastDate = lastRate.getDate();
+        LocalDate monthBeforeDate = lastDate.minusMonths(1);
+        Rate rateMonthBefore = rates.stream().filter(rate -> rate.getDate().isBefore(monthBeforeDate)).findFirst().get();
+        return rates.indexOf(rateMonthBefore);
     }
 
 }

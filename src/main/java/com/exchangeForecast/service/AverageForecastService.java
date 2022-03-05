@@ -69,6 +69,10 @@ public class AverageForecastService implements ForecastService {
         return rates.subList(rates.size() - SAMPLE_SIZE, rates.size());
     }
 
+    private List<Rate> getLastMonthSubList(List<Rate> rates) {
+        return rates.subList(rates.size() - SAMPLE_SIZE, rates.size());
+    }
+
     private boolean isLastDateInRatesBeforeTomorrow(List<Rate> rates) {
         return rates.get(rates.size() - 1).getDate().isBefore(LocalDate.now().plusDays(1));
     }
