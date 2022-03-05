@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 public class RatesParser {
 
-    private Rate parseRateRow(String rateRow) {
+    public Rate parseRateRow(String rateRow) {
         String[] rateParts = rateRow.split(";");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         return new Rate.Builder()

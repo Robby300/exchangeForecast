@@ -11,20 +11,20 @@ public enum Currency {
     AMD("Армянский драм", "AMD"),
     BGN("Болгарский лев", "BGN");
 
-    private final String DbName;
-    private final String ConsoleName;
+    private final String dbName;
+    private final String consoleName;
 
     public String getDbName() {
-        return DbName;
+        return dbName;
     }
 
     public String getConsoleName() {
-        return ConsoleName;
+        return consoleName;
     }
 
     Currency(String DbName, String consoleName) {
-        this.DbName = DbName;
-        this.ConsoleName = consoleName;
+        this.dbName = DbName;
+        this.consoleName = consoleName;
     }
 
     public static Currency ofConsoleName(String consoleName) {
