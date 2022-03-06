@@ -1,5 +1,6 @@
 package com.exchangeForecast.bot;
 
+import com.exchangeForecast.cash.RatesCash;
 import com.exchangeForecast.command.CommandContainer;
 import com.exchangeForecast.service.SendBotMessageService;
 import com.exchangeForecast.service.SendBotMessageServiceImpl;
@@ -16,10 +17,11 @@ public final class Bot extends TelegramLongPollingBot {
     public static String COMMAND_PREFIX = "";
 
     private final String BOT_NAME = "test_robby300_bot";
-    private final String BOT_TOKEN = "2067623158:AAGjETT5zTSEgJQqEojAvADITIMTsuRvmDI";
+    private final String BOT_TOKEN = System.getenv("BOT_TOKEN");
+    private final RatesCash cash = new RatesCash();
 
     private final SendBotMessageService sendBotMessageService = new SendBotMessageServiceImpl(this);
-    private final CommandContainer commandContainer = new CommandContainer(sendBotMessageService);
+    private final CommandContainer commandContainer = new CommandContainer(sendBotMessageService, cash);
 
     @Override
     public String getBotToken() {

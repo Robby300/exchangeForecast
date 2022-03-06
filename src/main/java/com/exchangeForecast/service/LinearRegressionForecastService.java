@@ -22,7 +22,6 @@ public class LinearRegressionForecastService implements ForecastService {
         int sampleSize = rates.size();
         int[] days;
         double[] exchangeRates;
-
         // first pass: read in data, compute xbar and ybar
         double sumDays, sumExchangeRates, sumSquareDays;
         days = IntStream.range(0, rates.size()).toArray();
@@ -143,7 +142,7 @@ public class LinearRegressionForecastService implements ForecastService {
         Rate lastRate = rates.get(rates.size() - 1);
         LocalDate lastDate = lastRate.getDate();
         LocalDate monthBeforeDate = lastDate.minusMonths(1);
-        Rate rateMonthBefore = rates.stream().filter(rate -> rate.getDate().isBefore(monthBeforeDate)).findFirst().get();
+        Rate rateMonthBefore = rates.stream().filter(rate -> rate.getDate().isAfter(monthBeforeDate)).findFirst().get();
         return rates.indexOf(rateMonthBefore);
     }
 

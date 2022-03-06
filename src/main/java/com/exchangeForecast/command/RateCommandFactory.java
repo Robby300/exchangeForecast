@@ -11,10 +11,11 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class RateCommandFactory implements Command {
 
     private final SendBotMessageService sendBotMessageService;
-    private final RatesCash cash = new RatesCash();
+    private final RatesCash cash;
 
-    public RateCommandFactory(SendBotMessageService sendBotMessageService) {
+    public RateCommandFactory(SendBotMessageService sendBotMessageService, RatesCash cash) {
         this.sendBotMessageService = sendBotMessageService;
+        this.cash = cash;
     }
 
     @Override

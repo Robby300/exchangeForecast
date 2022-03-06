@@ -12,7 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.List;
 
-public class RateCommandTomorrow implements Command {
+public class RateCommandTomorrow implements RateCommand {
 
     private final Currency cdx;
     private final ForecastService service = new LinearRegressionForecastService();

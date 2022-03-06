@@ -63,13 +63,13 @@ public class RatesCash {
     public List<Rate> getAmdRates() {
         amdRates = getRatesByLinkAndHash(amdRates, amdFileHash, links.getAmdLink());
         amdFileHash = getHash(links.getAmdLink());
-        return tryRates;
+        return amdRates;
     }
 
     public List<Rate> getBgnRates() {
         bgnRates = getRatesByLinkAndHash(bgnRates, bgnFileHash, links.getBgnLink());
         bgnFileHash = getHash(links.getBgnLink());
-        return tryRates;
+        return bgnRates;
     }
 
     private List<Rate> getRatesByLinkAndHash(List currentRates, int fileHash, String link) {

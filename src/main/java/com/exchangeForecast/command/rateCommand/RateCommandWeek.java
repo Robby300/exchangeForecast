@@ -11,7 +11,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.List;
 
-public class RateCommandWeek implements Command{
+public class RateCommandWeek implements RateCommand{
 
     private final Currency cdx;
     private final SendBotMessageService sendBotMessageService;
