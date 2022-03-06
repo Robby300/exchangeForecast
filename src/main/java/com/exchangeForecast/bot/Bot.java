@@ -13,7 +13,7 @@ import static com.exchangeForecast.command.CommandName.NO;
 
 public final class Bot extends TelegramLongPollingBot {
 
-    public static String COMMAND_PREFIX = "/";
+    public static String COMMAND_PREFIX = "";
 
     private final String BOT_NAME = "test_robby300_bot";
     private final String BOT_TOKEN = "2067623158:AAGjETT5zTSEgJQqEojAvADITIMTsuRvmDI";
@@ -35,6 +35,8 @@ public final class Bot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
             String message = update.getMessage().getText().trim();
+
+
             if (message.startsWith(COMMAND_PREFIX)) {
                 String commandIdentifier = message.split(" ")[0].toLowerCase();
 

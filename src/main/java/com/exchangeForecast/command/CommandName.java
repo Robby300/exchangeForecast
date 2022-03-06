@@ -1,10 +1,12 @@
 package com.exchangeForecast.command;
 
 public enum CommandName {
-    START("/start"),
-    HELP("/help"),
-    NO("/no"),
-    STOP("/stop");
+    START("start"),
+    HELP("help"),
+    NO("no"),
+    STOP("stop"),
+    RATE("rate"),
+    CDX("cdx");
 
     private final String commandName;
 

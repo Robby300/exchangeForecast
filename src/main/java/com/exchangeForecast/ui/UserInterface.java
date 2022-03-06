@@ -1,19 +1,14 @@
 package com.exchangeForecast.ui;
 
 import com.exchangeForecast.cash.RatesCash;
-import com.exchangeForecast.command.Command;
-import com.exchangeForecast.exceptions.NotValidException;
-import com.exchangeForecast.parser.CommandParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Optional;
 
 public class UserInterface {
     private static final Logger logger = LoggerFactory.getLogger(UserInterface.class);
     private final RatesCash cash = new RatesCash();
 
-     private final CommandParser commandParser = new CommandParser();
+    /*private final CommandParser commandParser = new CommandParser();
 
     public void initialize() {
         printUserInterface();
@@ -32,7 +27,7 @@ public class UserInterface {
         System.out.println("Type your command");
     }
 
-    /*public Command listenCommand() {
+    public Command listenCommand() {
         Optional<Command> optionalCommand = commandParser.getCommand();
         return optionalCommand.orElseThrow(() -> new NotValidException("Not valid command"));
     }*/
