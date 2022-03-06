@@ -1,8 +1,9 @@
 package com.exchangeForecast.command;
 
-import com.exchangeForecast.cash.RatesCash;
 import com.exchangeForecast.service.SendBotMessageService;
 import org.telegram.telegrambots.meta.api.objects.Update;
+
+import static com.exchangeForecast.command.CommandName.*;
 
 public class HelpCommand implements Command {
     private final SendBotMessageService sendBotMessageService;

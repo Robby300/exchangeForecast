@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public class CommandFactory {
 
-    public Optional<Command> create(String[] commandParts) {
+    /*public Optional<Command> create(String[] commandParts) {
         Command command;
         String commandName = commandParts[0];
         if (commandName.equals("exit")) {
@@ -17,7 +17,7 @@ public class CommandFactory {
         }
         else throw new NotValidException(commandName + " commandName not founded");
         return Optional.of(command);
-    }
+    }*/
 
     private Command getRateCommand(String[] commandParts) {
         Command command;

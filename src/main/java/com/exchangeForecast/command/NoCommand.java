@@ -1,6 +1,6 @@
 package com.exchangeForecast.command;
 
-import com.telBot.springbootflywaydemo.service.SendBotMessageService;
+import com.exchangeForecast.service.SendBotMessageService;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 /**

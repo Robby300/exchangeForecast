@@ -2,7 +2,8 @@ package com.exchangeForecast.command;
 
 import com.exchangeForecast.service.SendBotMessageService;
 import com.google.common.collect.ImmutableMap;
-import org.telegram.telegrambots.extensions.bots.commandbot.commands.helpCommand.HelpCommand;
+
+import static com.exchangeForecast.command.CommandName.*;
 
 /**
  * Container of the {@link Command}s, which are using for handling telegram commands.

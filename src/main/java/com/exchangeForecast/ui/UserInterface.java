@@ -17,13 +17,6 @@ public class UserInterface {
 
     public void initialize() {
         printUserInterface();
-        while (true) {
-            Command command = listenCommand();
-            long before = System.nanoTime();
-            command.execute(cash);
-            long after = System.nanoTime();
-            logger.info("время выполнение команды в нс = " + (after - before));
-        }
     }
 
     public void printUserInterface() {
@@ -39,8 +32,8 @@ public class UserInterface {
         System.out.println("Type your command");
     }
 
-    public Command listenCommand() {
+    /*public Command listenCommand() {
         Optional<Command> optionalCommand = commandParser.getCommand();
         return optionalCommand.orElseThrow(() -> new NotValidException("Not valid command"));
-    }
+    }*/
 }

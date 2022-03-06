@@ -15,7 +15,7 @@ public class CommandParser {
         return command.split("\\s");
     }
 
-    public Optional<Command> getCommand() {
+    /*public Optional<Command> getCommand() {
         return factory.create(splitForPArts());
-    }
+    }*/
 }
