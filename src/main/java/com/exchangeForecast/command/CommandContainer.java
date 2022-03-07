@@ -1,6 +1,7 @@
 package com.exchangeForecast.command;
 
 import com.exchangeForecast.cash.RatesCash;
+import com.exchangeForecast.command.rateCommand.RateCommandFactory;
 import com.exchangeForecast.service.SendBotMessageService;
 import com.google.common.collect.ImmutableMap;
 
@@ -23,7 +24,7 @@ public class CommandContainer {
                 .put(STOP.getCommandName(), new StopCommand(sendBotMessageService))
                 .put(HELP.getCommandName(), new HelpCommand(sendBotMessageService))
                 .put(NO.getCommandName(), new NoCommand(sendBotMessageService))
-                .put(RATE.getCommandName(), new RateCommandFactory(sendBotMessageService, cash).getCommand)
+                .put(RATE.getCommandName(), new RateCommandFactory(sendBotMessageService, cash))
                 .build();
 
         unknownCommand = new UnknownCommand(sendBotMessageService);

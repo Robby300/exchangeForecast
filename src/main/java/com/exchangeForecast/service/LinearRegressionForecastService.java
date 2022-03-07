@@ -1,15 +1,13 @@
 package com.exchangeForecast.service;
 
+import com.exchangeForecast.domain.ForecastPeriod;
 import com.exchangeForecast.domain.Rate;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.IntStream;
-
-import static java.math.BigDecimal.*;
 
 public class LinearRegressionForecastService implements ForecastService {
     private static final int SAMPLE_SIZE = 7;
@@ -17,7 +15,6 @@ public class LinearRegressionForecastService implements ForecastService {
     private double yybar = 0.0;
     private double xybar = 0.0;
 
-    @Override
     public Rate forecastNextDay(List<Rate> rates) {
         int sampleSize = rates.size();
         int[] days;
@@ -73,25 +70,6 @@ public class LinearRegressionForecastService implements ForecastService {
                 .build();
     }
 
-    @Override
-    public List<Rate> forecastNextWeek(List<Rate> rates) {
-        if (isLastDateInRatesBeforeNextWeek(rates)) {
-            fillRatesWithForecastRate(notForecastRateReachedNextWeek, rates);
-        }
-        return getLastWeekSubList(rates);
-    }
-
-    @Override
-    public Rate forecastTomorrow(List<Rate> rates) {
-        if (isLastDateInRatesBeforeTomorrow(rates)) {
-            return fillRatesWithForecastRate(notForecastRateReachedTomorrow, rates);
-        }
-        return rates.stream()
-                .filter(rate -> rate.getDate().equals(LocalDate.now().plusDays(1)))
-                .findFirst()
-                .orElseThrow();
-    }
-
     private void computeSummaryStatistics(int dataSize, int[] days, double[] exchangeRates, double xbar, double ybar) {
         for (int i = 0; i < dataSize; i++) {
             xxbar += (days[i] - xbar) * (days[i] - xbar);
@@ -100,42 +78,8 @@ public class LinearRegressionForecastService implements ForecastService {
         }
     }
 
-    private final Predicate<List<Rate>> notForecastRateReachedTomorrow
-            = forecastRates -> !forecastRates
-            .get(forecastRates.size() - 1)
-            .getDate()
-            .equals(LocalDate.now().plusDays(1));
-
-    private final Predicate<List<Rate>> notForecastRateReachedNextWeek
-            = forecastRates -> !forecastRates
-            .get(forecastRates.size() - 1)
-            .getDate()
-            .equals(LocalDate.now().plusDays(7));
-
-    private List<Rate> getLastWeekSubList(List<Rate> rates) {
-        return rates.subList(rates.size() - SAMPLE_SIZE, rates.size());
-    }
-
     private List<Rate> getLastMonthSubList(List<Rate> rates) {
         return rates.subList(getIndexOfMonthBeforeRate(rates), rates.size());
-    }
-
-    private boolean isLastDateInRatesBeforeTomorrow(List<Rate> rates) {
-        return rates.get(rates.size() - 1).getDate().isBefore(LocalDate.now().plusDays(1));
-    }
-
-    private boolean isLastDateInRatesBeforeNextWeek(List<Rate> rates) {
-        return rates.get(rates.size() - 1).getDate().isBefore(LocalDate.now().plusDays(SAMPLE_SIZE));
-    }
-
-    private Rate fillRatesWithForecastRate(Predicate<List<Rate>> predicate, List<Rate> rates) {
-        Rate forecastRate = null;
-        while (predicate.test(rates)) {
-            List<Rate> lastMonthRates = getLastMonthSubList(rates);
-            forecastRate = forecastNextDay(lastMonthRates);
-            rates.add(forecastRate);
-        }
-        return forecastRate;
     }
 
     private int getIndexOfMonthBeforeRate(List<Rate> rates) {
@@ -146,4 +90,23 @@ public class LinearRegressionForecastService implements ForecastService {
         return rates.indexOf(rateMonthBefore);
     }
 
+    @Override
+    public List<Rate> forecastByPeriod(List<Rate> rates, ForecastPeriod period) {
+        while (!getLastRate(rates).getDate().equals(LocalDate.now().plusDays(period.getDaysCount()))) {
+            rates.add(forecastNextDay(getLastMonthSubList(rates)));
+        }
+        return rates.subList(rates.size() - period.getDaysCount(), rates.size() - 1);
+    }
+
+    @Override
+    public Rate forecastByDate(List<Rate> rates, LocalDate date) {
+        while (getLastRate(rates).getDate().isAfter(date.plusDays(1))) {
+            rates.add(forecastNextDay(getLastMonthSubList(rates)));
+        }
+        return rates.stream().filter(rate -> rate.getDate().equals(date)).findFirst().get();
+    }
+
+    private Rate getLastRate(List<Rate> rates) {
+        return rates.get(rates.size() - 1);
+    }
 }

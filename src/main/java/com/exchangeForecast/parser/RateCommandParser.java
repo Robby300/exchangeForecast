@@ -9,7 +9,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 
 public class RateCommandParser {
 
-    public RateCommand getParseCommandFromMessage(Message message) {
+    /*public RateCommand getParseCommandFromMessage(Message message) {
         String[] commandParts = message.getText().split("\\s");
         Currency cdx = Currency.ofConsoleName(commandParts[1]);
 
@@ -21,5 +21,5 @@ public class RateCommandParser {
             command = new RateCommandTomorrow(sendBotMessageService, cdx, cash);
         }
         else throw new NotValidException(period + " period not founded");
-    }
+    }*/
 }

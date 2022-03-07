@@ -1,10 +1,8 @@
 package com.exchangeForecast.command.rateCommand;
 
 import com.exchangeForecast.cash.RatesCash;
-import com.exchangeForecast.command.Command;
 import com.exchangeForecast.domain.Currency;
 import com.exchangeForecast.domain.Rate;
-import com.exchangeForecast.service.AverageForecastService;
 import com.exchangeForecast.service.ForecastService;
 import com.exchangeForecast.service.LinearRegressionForecastService;
 import com.exchangeForecast.service.SendBotMessageService;

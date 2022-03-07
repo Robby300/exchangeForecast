@@ -1,12 +1,12 @@
 package com.exchangeForecast.service;
 
+import com.exchangeForecast.domain.ForecastPeriod;
 import com.exchangeForecast.domain.Rate;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ForecastService {
-    //Rate forecastNextDay(List<Rate> rates);
-    List<Rate> forecastNextWeek(List<Rate> rates);
-    Rate forecastTomorrow(List<Rate> rates);
-    Rate forecastNextDay(List<Rate> rates);
+    List<Rate> forecastByPeriod(List<Rate> rates, ForecastPeriod period);
+    Rate forecastByDate(List<Rate> rates, LocalDate date);
 }

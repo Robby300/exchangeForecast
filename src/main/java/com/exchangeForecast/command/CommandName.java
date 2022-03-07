@@ -1,21 +1,16 @@
 package com.exchangeForecast.command;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum CommandName {
     START("start"),
     HELP("help"),
     NO("no"),
     STOP("stop"),
-    RATE("rate"),
-    CDX("cdx");
+    RATE("rate");
 
     private final String commandName;
-
-    CommandName(String commandName) {
-        this.commandName = commandName;
-    }
-
-    public String getCommandName() {
-        return commandName;
-    }
-
 }
