@@ -6,7 +6,7 @@ import com.exchangeForecast.parser.RateCommandParser;
 import com.exchangeForecast.service.SendBotMessageService;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-public class RateCommandFactory implements Command {
+public class RateCommandFactory {
 
     private final SendBotMessageService sendBotMessageService;
     private final RatesCash cash;
@@ -18,8 +18,9 @@ public class RateCommandFactory implements Command {
         this.cash = cash;
     }
 
-    @Override
-    public void execute(Update update) {
-        RateCommand command = parser.getParseCommandFromMessage(update.getMessage());
+    public RateCommand getCommand() {
+
     }
+
+
 }

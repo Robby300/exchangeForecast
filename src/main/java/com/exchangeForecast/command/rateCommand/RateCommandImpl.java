@@ -23,7 +23,8 @@ public class RateCommandImpl implements RateCommand {
 
     @Builder
     public RateCommandImpl(Currency cdx, String period, LocalDate date,
-                           ForecastService algorithm, OutputService outputMethod, SendBotMessageService sendBotMessageService, RatesCash cash) {
+                           ForecastService algorithm, OutputService outputMethod,
+                           SendBotMessageService sendBotMessageService, RatesCash cash) {
         this.cdx = cdx;
         this.period = period;
         this.date = date;
