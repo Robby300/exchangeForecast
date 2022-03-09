@@ -1,5 +1,10 @@
 package com.exchangeForecast.service;
 
+import com.exchangeForecast.domain.Rate;
+import org.telegram.telegrambots.meta.api.objects.Update;
+
+import java.util.List;
+
 public interface OutputService {
-    void output(SendBotMessageService sendBotMessageService);
+    void output(Update update, SendBotMessageService sendBotMessageService, List<Rate> rates);
 }

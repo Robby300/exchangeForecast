@@ -1,5 +1,7 @@
 package com.exchangeForecast.service;
 
+import com.exchangeForecast.cash.RatesCash;
+import com.exchangeForecast.domain.Currency;
 import com.exchangeForecast.domain.ForecastPeriod;
 import com.exchangeForecast.domain.Rate;
 
@@ -7,6 +9,5 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface ForecastService {
-    List<Rate> forecastByPeriod(List<Rate> rates, ForecastPeriod period);
-    Rate forecastByDate(List<Rate> rates, LocalDate date);
+    List<Rate> forecast(RatesCash cash, Currency cdx, ForecastPeriod period, LocalDate date);
 }
