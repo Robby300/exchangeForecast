@@ -56,13 +56,20 @@ public class MysticForecastService implements ForecastService {
         return rates.stream()
                 .filter(rate -> rate.getDate().equals(date))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("В полнолуние остутствуют данные"));
+                .orElse(getRateNearByDate(rates, date));
+    }
+
+    private Rate getRateNearByDate(List<Rate> rates, LocalDate date) {
+        return rates.stream()
+                .filter(rate -> rate.getDate().isAfter(date))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Данных после полнолуния нет"));
     }
 
     private Rate forecastByDate(List<Rate> rates, LocalDate date) {
         BigDecimal sumOfThreeRatesOfFullMoon = new BigDecimal(0);
         for (LocalDate localDate : threeLastFullMoons) {
-            sumOfThreeRatesOfFullMoon.add(getRateByDate(rates, localDate).getExchangeRate());
+            sumOfThreeRatesOfFullMoon = sumOfThreeRatesOfFullMoon.add(getRateByDate(rates, localDate).getExchangeRate());
         }
         BigDecimal forecastRate = sumOfThreeRatesOfFullMoon.divide(BigDecimal.valueOf(3), RoundingMode.HALF_DOWN);
         return Rate.builder()

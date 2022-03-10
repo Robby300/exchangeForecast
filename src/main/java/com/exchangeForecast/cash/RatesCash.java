@@ -72,7 +72,7 @@ public class RatesCash {
         return bgnRates;
     }
 
-    private List<Rate> getRatesByLinkAndHash(List currentRates, int fileHash, String link) {
+    private List<Rate> getRatesByLinkAndHash(List<Rate> currentRates, int fileHash, String link) {
         if (currentRates != null && fileHash == getHash(link)) {
             return currentRates;
         }

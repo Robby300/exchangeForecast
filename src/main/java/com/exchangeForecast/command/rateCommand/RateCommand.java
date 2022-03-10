@@ -8,6 +8,7 @@ import com.exchangeForecast.domain.Rate;
 import com.exchangeForecast.service.algorithmService.ActualForecastService;
 import com.exchangeForecast.service.algorithmService.ForecastService;
 import com.exchangeForecast.service.algorithmService.LinearRegressionForecastService;
+import com.exchangeForecast.service.algorithmService.MysticForecastService;
 import com.exchangeForecast.service.outputServcie.GraphOutputService;
 import com.exchangeForecast.service.outputServcie.ListOutputService;
 import com.exchangeForecast.service.outputServcie.OutputService;
@@ -69,6 +70,9 @@ public class RateCommand implements Command {
                     break;
                 case "actual":
                     setAlgorithm(new ActualForecastService());
+                    break;
+                case  "mystic":
+                    setAlgorithm(new MysticForecastService());
             }
         }
         if (output.equals("-output")) {
