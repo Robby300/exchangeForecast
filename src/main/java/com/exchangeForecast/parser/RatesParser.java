@@ -19,7 +19,7 @@ public class RatesParser {
     public Rate parseRateRow(String rateRow) {
         String[] rateParts = rateRow.split(";");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        return new Rate.Builder()
+        return Rate.builder()
                 .date(LocalDate.parse(rateParts[1], formatter))
                 .exchangeRate(new BigDecimal(rateParts[2].substring(1, rateParts[2].length() - 2).replace(",", "."))
                         .divide(BigDecimal.valueOf(Double.parseDouble(rateParts[0]))))
