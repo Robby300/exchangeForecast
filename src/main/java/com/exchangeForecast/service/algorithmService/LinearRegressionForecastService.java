@@ -1,4 +1,4 @@
-package com.exchangeForecast.service;
+package com.exchangeForecast.service.algorithmService;
 
 import com.exchangeForecast.cash.RatesCash;
 import com.exchangeForecast.domain.Currency;
@@ -6,7 +6,6 @@ import com.exchangeForecast.domain.ForecastPeriod;
 import com.exchangeForecast.domain.Rate;
 import com.exchangeForecast.exceptions.IndexNotFoundException;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

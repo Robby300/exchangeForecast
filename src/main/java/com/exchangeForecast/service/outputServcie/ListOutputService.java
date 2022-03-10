@@ -1,4 +1,4 @@
-package com.exchangeForecast.service;
+package com.exchangeForecast.service.outputServcie;
 
 import com.exchangeForecast.domain.Rate;
 import org.telegram.telegrambots.meta.api.objects.Update;

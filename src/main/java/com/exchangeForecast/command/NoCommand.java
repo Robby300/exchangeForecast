@@ -1,6 +1,6 @@
 package com.exchangeForecast.command;
 
-import com.exchangeForecast.service.SendBotMessageService;
+import com.exchangeForecast.service.outputServcie.SendBotMessageService;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 /**
@@ -10,7 +10,7 @@ public class NoCommand implements Command {
 
     private final SendBotMessageService sendBotMessageService;
 
-    public static final String NO_MESSAGE = "Я поддерживаю команды, начинающиеся со слеша(/).\n"
+    public static final String NO_MESSAGE = "Я поддерживаю команды.\n"
             + "Чтобы посмотреть список команд введите /help";
 
     public NoCommand(SendBotMessageService sendBotMessageService) {

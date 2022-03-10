@@ -5,7 +5,13 @@ import com.exchangeForecast.command.Command;
 import com.exchangeForecast.domain.Currency;
 import com.exchangeForecast.domain.ForecastPeriod;
 import com.exchangeForecast.domain.Rate;
-import com.exchangeForecast.service.*;
+import com.exchangeForecast.service.algorithmService.ActualForecastService;
+import com.exchangeForecast.service.algorithmService.ForecastService;
+import com.exchangeForecast.service.algorithmService.LinearRegressionForecastService;
+import com.exchangeForecast.service.outputServcie.GraphOutputService;
+import com.exchangeForecast.service.outputServcie.ListOutputService;
+import com.exchangeForecast.service.outputServcie.OutputService;
+import com.exchangeForecast.service.outputServcie.SendBotMessageService;
 import lombok.Getter;
 import lombok.Setter;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -51,7 +57,9 @@ public class RateCommand implements Command {
                 setDate(null);
                 break;
             case "-date":
-                setDate(LocalDate.parse(timeLineArgument, formatter));
+                if (timeLineArgument.equals("tomorrow")) {
+                    setDate(LocalDate.now().plusDays(1));
+                } else setDate(LocalDate.parse(timeLineArgument, formatter));
                 setPeriod(null);
         }
         if (alg.equals("-alg")) {
@@ -72,7 +80,6 @@ public class RateCommand implements Command {
                     setOutputMethod(new GraphOutputService());
             }
         }
-
         List<Rate> rates = algorithm.forecast(cash, cdx, period, date);
         outputMethod.output(update, sendBotMessageService, rates);
     }

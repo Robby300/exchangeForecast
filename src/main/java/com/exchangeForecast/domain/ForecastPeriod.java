@@ -4,7 +4,6 @@ import com.exchangeForecast.exceptions.NotValidException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.time.LocalDate;
 import java.util.Arrays;
 
 @Getter

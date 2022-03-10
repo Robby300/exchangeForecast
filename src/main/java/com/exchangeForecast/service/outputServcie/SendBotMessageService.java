@@ -1,4 +1,4 @@
-package com.exchangeForecast.service;
+package com.exchangeForecast.service.outputServcie;
 
 /**
  * Service for sending messages via telegram-bot.

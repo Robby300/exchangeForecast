@@ -1,6 +1,6 @@
 package com.exchangeForecast.command;
 
-import com.exchangeForecast.service.SendBotMessageService;
+import com.exchangeForecast.service.outputServcie.SendBotMessageService;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import static com.exchangeForecast.command.CommandName.*;

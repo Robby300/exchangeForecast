@@ -76,8 +76,7 @@ public class RatesCash {
         if (currentRates != null && fileHash == getHash(link)) {
             return currentRates;
         }
-        currentRates = ratesParser.getRatesFromFile(link);
-        return currentRates;
+        return ratesParser.getRatesFromFile(link);
     }
 
     public int getHash(String link) {
