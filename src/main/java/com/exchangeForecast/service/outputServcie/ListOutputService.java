@@ -8,8 +8,11 @@ import java.util.List;
 public class ListOutputService implements OutputService {
 
     @Override
-    public void output(Update update, SendBotMessageService sendBotMessageService, List<Rate> rates) {
-        sendBotMessageService.sendMessage(update.getMessage().getChatId().toString(), ratesToString(rates));
+    public void output(Update update, SendBotMessageService sendBotMessageService, List<List<Rate>> listOfRates) {
+        for (List<Rate> rates: listOfRates) {
+            sendBotMessageService.sendMessage(update.getMessage().getChatId().toString(), ratesToString(rates));
+        }
+
     }
 
     private String ratesToString(List<Rate> rates) {

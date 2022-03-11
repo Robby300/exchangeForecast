@@ -10,7 +10,6 @@ import java.util.Arrays;
 @AllArgsConstructor
 public enum ForecastPeriod {
 
-    TOMORROW(1, "tomorrow"),
     WEEK(7, "week"),
     MONTH(30, "month");
 

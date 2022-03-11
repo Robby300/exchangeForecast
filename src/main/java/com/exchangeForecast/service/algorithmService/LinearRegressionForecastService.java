@@ -1,7 +1,5 @@
 package com.exchangeForecast.service.algorithmService;
 
-import com.exchangeForecast.cash.RatesCash;
-import com.exchangeForecast.domain.Currency;
 import com.exchangeForecast.domain.ForecastPeriod;
 import com.exchangeForecast.domain.Rate;
 import com.exchangeForecast.exceptions.IndexNotFoundException;
@@ -15,23 +13,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
-public class LinearRegressionForecastService implements ForecastService {
+public class LinearRegressionForecastService extends ForecastService {
     private double xxbar = 0.0;
     private double yybar = 0.0;
     private double xybar = 0.0;
 
-    @Override
-    public List<Rate> forecast(RatesCash cash, Currency cdx, ForecastPeriod period, LocalDate date) {
-        List<Rate> rates = cash.getRatesByCDX(cdx);
-        if (period != null) {
-            return forecastByPeriod(rates, period);
-        } else if (date != null) {
-            return List.of(forecastByDate(rates, date));
-        }
-        return rates;
-    }
-
-    private void computeSummaryStatistics(int dataSize, int[] days, double[] exchangeRates, double xbar, double ybar) {
+    private void computeSummaryStatistics(int dataSize, int[] days, double[] exchangeRates, double xbar,
+                                          double ybar) {
         for (int i = 0; i < dataSize; i++) {
             xxbar += (days[i] - xbar) * (days[i] - xbar);
             yybar += (exchangeRates[i] - ybar) * (exchangeRates[i] - ybar);
@@ -40,7 +28,7 @@ public class LinearRegressionForecastService implements ForecastService {
     }
 
     @AllArgsConstructor
-    class RegressionModel {
+    private class RegressionModel {
         private final BigDecimal betta1;
         private final BigDecimal betta0;
     }
@@ -86,8 +74,6 @@ public class LinearRegressionForecastService implements ForecastService {
         System.out.println("SSE  = " + rss);
         System.out.println("SSR  = " + ssr);
         System.out.println(rates.size());
-        //System.out.println(beta1 * rates.size() + beta0);
-        //BigDecimal forecastExchangeRate = BigDecimal.valueOf(beta1 * rates.size() + beta0);
         return new RegressionModel(BigDecimal.valueOf(beta1), BigDecimal.valueOf(beta0));
     }
 
@@ -102,7 +88,8 @@ public class LinearRegressionForecastService implements ForecastService {
         return rates.indexOf(rateMonthBefore);
     }
 
-    private List<Rate> forecastByPeriod(List<Rate> rates, ForecastPeriod period) {
+    @Override
+    public List<Rate> forecastByPeriod(List<Rate> rates, ForecastPeriod period) {
         List<Rate> resultRates = new ArrayList<>();
         for (int i = 0; i < period.getDaysCount(); i++) {
             resultRates.add(forecastByDate(rates, LocalDate.now().plusDays(i + 1)));
@@ -110,7 +97,7 @@ public class LinearRegressionForecastService implements ForecastService {
         return resultRates;
     }
 
-    private Rate forecastByDate(List<Rate> rates, LocalDate date) {
+    public Rate forecastByDate(List<Rate> rates, LocalDate date) {
         List<Rate> lastMonthRates = getLastMonthSubList(rates);
         RegressionModel regressionModel = getRegressionModel(lastMonthRates);
         LocalDate lastRateDate = getLastRate(lastMonthRates).getDate();
@@ -125,10 +112,6 @@ public class LinearRegressionForecastService implements ForecastService {
 
     private BigDecimal getDaysBetween(LocalDate date, LocalDate lastRateDate) {
         return BigDecimal.valueOf(ChronoUnit.DAYS.between(lastRateDate, date));
-    }
-
-    private Rate getLastRate(List<Rate> rates) {
-        return rates.get(rates.size() - 1);
     }
 
     private List<Rate> getLastMonthSubList(List<Rate> rates) {

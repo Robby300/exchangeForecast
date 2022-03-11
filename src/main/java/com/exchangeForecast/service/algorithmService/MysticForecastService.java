@@ -1,9 +1,8 @@
 package com.exchangeForecast.service.algorithmService;
 
-import com.exchangeForecast.cash.RatesCash;
-import com.exchangeForecast.domain.Currency;
 import com.exchangeForecast.domain.ForecastPeriod;
 import com.exchangeForecast.domain.Rate;
+import com.exchangeForecast.exceptions.RateNotFound;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -11,25 +10,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MysticForecastService implements ForecastService {
+public class MysticForecastService extends ForecastService {
     private final List<LocalDate> threeLastFullMoons = List.of(
             LocalDate.of(2022, 1, 18),
             LocalDate.of(2022, 2, 16),
             LocalDate.of(2021, 12, 19)
     );
 
-    @Override
-    public List<Rate> forecast(RatesCash cash, Currency cdx, ForecastPeriod period, LocalDate date) {
-        List<Rate> rates = cash.getRatesByCDX(cdx);
-        if (period != null) {
-            return forecastByPeriod(rates, period);
-        } else if (date != null) {
-            return List.of(forecastByDate(rates, date));
-        }
-        return rates;
-    }
-
-    private List<Rate> forecastByPeriod(List<Rate> rates, ForecastPeriod period) {
+    public List<Rate> forecastByPeriod(List<Rate> rates, ForecastPeriod period) {
         List<Rate> resultRates = new ArrayList<>();
         Rate tomorrowRate = forecastByDate(rates, LocalDate.now().plusDays(1));
         resultRates.add(tomorrowRate);
@@ -63,13 +51,14 @@ public class MysticForecastService implements ForecastService {
         return rates.stream()
                 .filter(rate -> rate.getDate().isAfter(date))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Данных после полнолуния нет"));
+                .orElseThrow(() -> new RateNotFound("Данных после полнолуния нет"));
     }
 
-    private Rate forecastByDate(List<Rate> rates, LocalDate date) {
+    public Rate forecastByDate(List<Rate> rates, LocalDate date) {
         BigDecimal sumOfThreeRatesOfFullMoon = new BigDecimal(0);
         for (LocalDate localDate : threeLastFullMoons) {
-            sumOfThreeRatesOfFullMoon = sumOfThreeRatesOfFullMoon.add(getRateByDate(rates, localDate).getExchangeRate());
+            sumOfThreeRatesOfFullMoon = sumOfThreeRatesOfFullMoon
+                    .add(getRateByDate(rates, localDate).getExchangeRate());
         }
         BigDecimal forecastRate = sumOfThreeRatesOfFullMoon.divide(BigDecimal.valueOf(3), RoundingMode.HALF_DOWN);
         return Rate.builder()
@@ -77,9 +66,5 @@ public class MysticForecastService implements ForecastService {
                 .exchangeRate(forecastRate)
                 .currency(getLastRate(rates).getCurrency())
                 .build();
-    }
-
-    private Rate getLastRate(List<Rate> rates) {
-        return rates.get(rates.size() - 1);
     }
 }

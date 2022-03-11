@@ -2,7 +2,6 @@ package com.exchangeForecast.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.math.BigDecimal;
@@ -15,7 +14,6 @@ import java.util.Locale;
 @AllArgsConstructor
 @Builder
 @Getter
-@EqualsAndHashCode
 public class Rate {
     private final LocalDate date;
     private final BigDecimal exchangeRate;

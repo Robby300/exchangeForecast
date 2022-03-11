@@ -1,7 +1,6 @@
-package com.exchangeForecast.command.rateCommand;
+package com.exchangeForecast.command;
 
 import com.exchangeForecast.cash.RatesCash;
-import com.exchangeForecast.command.Command;
 import com.exchangeForecast.domain.Currency;
 import com.exchangeForecast.domain.ForecastPeriod;
 import com.exchangeForecast.domain.Rate;
@@ -21,13 +20,15 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Setter
 @Getter
 
 public class RateCommand implements Command {
-    private Currency cdx;
+    private List<Currency> cdx;
     private ForecastPeriod period;
     private LocalDate date;
     private ForecastService algorithm;
@@ -53,7 +54,8 @@ public class RateCommand implements Command {
         String output = messageArgs[6];
         String outputArgument = messageArgs[7];
 
-        setCdx(Currency.ofConsoleName(cdxArgument));
+        String[] cdxLines = cdxArgument.split(",", 5);
+        setCdx(Arrays.stream(cdxLines).map(Currency::ofConsoleName).collect(Collectors.toList()));
         switch (timeLine) {
             case "-period":
                 setPeriod(ForecastPeriod.ofName(timeLineArgument));
@@ -73,7 +75,7 @@ public class RateCommand implements Command {
                 case "actual":
                     setAlgorithm(new ActualForecastService());
                     break;
-                case  "mystic":
+                case "mystic":
                     setAlgorithm(new MysticForecastService());
             }
         }
@@ -86,12 +88,10 @@ public class RateCommand implements Command {
                     setOutputMethod(new GraphOutputService());
             }
         }
-        List<Rate> rates = algorithm.forecast(cash, cdx, period, date);
+        List<List<Rate>> listsOfRates = algorithm.forecast(cash, cdx, period, date);
         try {
-            outputMethod.output(update, sendBotMessageService, rates);
-        } catch (PythonExecutionException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            outputMethod.output(update, sendBotMessageService, listsOfRates);
+        } catch (PythonExecutionException | IOException e) {
             e.printStackTrace();
         }
     }

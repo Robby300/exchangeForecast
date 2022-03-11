@@ -13,7 +13,6 @@ public final class Bot extends TelegramLongPollingBot {
 
     public static String COMMAND_PREFIX = "";
 
-    private final String BOT_NAME = "test_robby300_bot";
     private final String BOT_TOKEN = System.getenv("BOT_TOKEN");
     private final RatesCash cash = new RatesCash();
 
@@ -27,7 +26,7 @@ public final class Bot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return BOT_NAME;
+        return "test_robby300_bot";
     }
 
     @Override

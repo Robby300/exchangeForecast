@@ -1,7 +1,6 @@
 package com.exchangeForecast.command;
 
 import com.exchangeForecast.cash.RatesCash;
-import com.exchangeForecast.command.rateCommand.RateCommand;
 import com.exchangeForecast.service.outputServcie.SendBotMessageService;
 import com.google.common.collect.ImmutableMap;
 
