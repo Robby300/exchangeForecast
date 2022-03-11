@@ -1,4 +1,4 @@
-package com.exchangeForecast.service.algorithmService;
+package com.exchangeForecast.service.forecastService;
 
 import com.exchangeForecast.cash.RatesCash;
 import com.exchangeForecast.domain.Currency;

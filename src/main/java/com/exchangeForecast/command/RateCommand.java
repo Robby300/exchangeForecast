@@ -4,10 +4,10 @@ import com.exchangeForecast.cash.RatesCash;
 import com.exchangeForecast.domain.Currency;
 import com.exchangeForecast.domain.ForecastPeriod;
 import com.exchangeForecast.domain.Rate;
-import com.exchangeForecast.service.algorithmService.ActualForecastService;
-import com.exchangeForecast.service.algorithmService.ForecastService;
-import com.exchangeForecast.service.algorithmService.LinearRegressionForecastService;
-import com.exchangeForecast.service.algorithmService.MysticForecastService;
+import com.exchangeForecast.service.forecastService.ActualForecastService;
+import com.exchangeForecast.service.forecastService.ForecastService;
+import com.exchangeForecast.service.forecastService.LinearRegressionForecastService;
+import com.exchangeForecast.service.forecastService.MysticForecastService;
 import com.exchangeForecast.service.outputServcie.GraphOutputService;
 import com.exchangeForecast.service.outputServcie.ListOutputService;
 import com.exchangeForecast.service.outputServcie.OutputService;
@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
 
 @Setter
 @Getter
-
 public class RateCommand implements Command {
     private List<Currency> cdx;
     private ForecastPeriod period;
@@ -45,7 +44,6 @@ public class RateCommand implements Command {
     public void execute(Update update) {
         String[] messageArgs = update.getMessage().getText().split("\\s");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-
         String cdxArgument = messageArgs[1];
         String timeLine = messageArgs[2];
         String timeLineArgument = messageArgs[3];

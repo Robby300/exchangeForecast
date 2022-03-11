@@ -1,4 +1,4 @@
-package com.exchangeForecast.service.algorithmService;
+package com.exchangeForecast.service.forecastService;
 
 import com.exchangeForecast.domain.ForecastPeriod;
 import com.exchangeForecast.domain.Rate;
