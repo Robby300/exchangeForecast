@@ -13,11 +13,11 @@ public class ListOutputService implements OutputService {
     }
 
     private String ratesToString(List<Rate> rates) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (Rate rate :
                 rates) {
-            result += rate.toString() + "\n";
+            result.append(rate.toString()).append("\n");
         }
-        return result;
+        return result.toString();
     }
 }

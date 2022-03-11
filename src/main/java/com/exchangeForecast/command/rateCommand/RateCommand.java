@@ -13,10 +13,12 @@ import com.exchangeForecast.service.outputServcie.GraphOutputService;
 import com.exchangeForecast.service.outputServcie.ListOutputService;
 import com.exchangeForecast.service.outputServcie.OutputService;
 import com.exchangeForecast.service.outputServcie.SendBotMessageService;
+import com.github.sh0nk.matplotlib4j.PythonExecutionException;
 import lombok.Getter;
 import lombok.Setter;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -85,6 +87,12 @@ public class RateCommand implements Command {
             }
         }
         List<Rate> rates = algorithm.forecast(cash, cdx, period, date);
-        outputMethod.output(update, sendBotMessageService, rates);
+        try {
+            outputMethod.output(update, sendBotMessageService, rates);
+        } catch (PythonExecutionException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
