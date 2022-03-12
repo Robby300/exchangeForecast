@@ -5,12 +5,12 @@ import com.exchangeForecast.domain.ForecastPeriod;
 import com.exchangeForecast.domain.Rate;
 import org.testng.annotations.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.within;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.within;
 
 public class MoonForecastServiceTest {
 
@@ -20,7 +20,7 @@ public class MoonForecastServiceTest {
             new Rate(LocalDate.of(2021, 12, 19), BigDecimal.valueOf(30), Currency.USD),
             new Rate(LocalDate.of(2022, 1, 18), BigDecimal.valueOf(10), Currency.USD),
             new Rate(LocalDate.of(2022, 2, 16), BigDecimal.valueOf(20), Currency.USD)
-            );
+    );
 
     @Test
     public void shouldForecastByPeriod() {

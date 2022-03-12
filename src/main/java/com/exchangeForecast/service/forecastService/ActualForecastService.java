@@ -2,6 +2,7 @@ package com.exchangeForecast.service.forecastService;
 
 import com.exchangeForecast.domain.ForecastPeriod;
 import com.exchangeForecast.domain.Rate;
+import com.exchangeForecast.exceptions.RateNotFound;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -34,16 +35,23 @@ public class ActualForecastService extends ForecastService {
         return rate -> rate.getDate().isAfter(LocalDate.now().minusYears(years).plusDays(days));
     }
 
+    private Rate getRateFirstAfterDate(List<Rate> rates, LocalDate date) {
+        return rates.stream()
+                .filter(rate -> rate.getDate().isAfter(date))
+                .findFirst()
+                .orElseThrow(() -> new RateNotFound("Данных нет"));
+    }
+
     @Override
     public Rate forecastByDate(List<Rate> rates, LocalDate date) {
         Rate rateTwoYearsAgo = rates.stream()
-                .filter(getRateAfterYearsAndDays(2, 0))
+                .filter(rate -> rate.getDate().equals(date.minusYears(2)))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Rate not founded"));
+                .orElseGet(() -> getRateFirstAfterDate(rates, date.minusYears(2)));
         Rate rateThreeYearsAgo = rates.stream()
-                .filter(getRateAfterYearsAndDays(3, 0))
+                .filter(rate -> rate.getDate().equals(date.minusYears(3)))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Rate not founded"));
+                .orElseGet(() -> getRateFirstAfterDate(rates, date.minusYears(3)));
         return Rate.builder()
                 .date(date)
                 .currency(getLastRate(rates).getCurrency())
