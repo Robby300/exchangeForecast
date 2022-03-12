@@ -111,7 +111,7 @@ public class LinearRegressionForecastService extends ForecastService {
     }
 
     private BigDecimal getDaysBetween(LocalDate date, LocalDate lastRateDate) {
-        return BigDecimal.valueOf(ChronoUnit.DAYS.between(lastRateDate, date));
+        return BigDecimal.valueOf(ChronoUnit.DAYS.between(lastRateDate, date) - 1);
     }
 
     private List<Rate> getLastMonthSubList(List<Rate> rates) {
