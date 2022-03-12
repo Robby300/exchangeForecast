@@ -13,12 +13,11 @@ public class RatesParserTest {
     @Test
     public void shouldParseRateRow() {
         RatesParser ratesParser = new RatesParser();
-        String rateRow = "10;26.02.2022;\"59,4030\";Турецкая лира";
+        String rateRow = "10;26.02.2022;\"59,400\";Турецкая лира";
         Rate rate = ratesParser.parseRateRow(rateRow);
 
         assertThat(rate.getExchangeRate())
-                .isEqualTo(BigDecimal.valueOf(5.94030));
+                .isEqualTo(BigDecimal.valueOf(5.9400));
         assertThat(rate.getCurrency()).isEqualTo(Currency.TRY);
-
     }
 }

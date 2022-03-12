@@ -3,6 +3,7 @@ package com.exchangeForecast.service.forecastService;
 import com.exchangeForecast.domain.ForecastPeriod;
 import com.exchangeForecast.domain.Rate;
 import com.exchangeForecast.exceptions.RateNotFound;
+import com.google.common.collect.ImmutableList;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MysticForecastService extends ForecastService {
-    private final List<LocalDate> threeLastFullMoons = List.of(
+    private final List<LocalDate> threeLastFullMoons = ImmutableList.of(
             LocalDate.of(2022, 1, 18),
             LocalDate.of(2022, 2, 16),
             LocalDate.of(2021, 12, 19)
@@ -42,12 +43,12 @@ public class MysticForecastService extends ForecastService {
 
     private Rate getRateByDate(List<Rate> rates, LocalDate date) {
         return rates.stream()
-                .filter(rate -> rate.getDate().equals(date))
-                .findFirst()
-                .orElse(getRateNearByDate(rates, date));
+                .filter(rate -> rate.getDate().isEqual(date))
+                .findAny()
+                .orElse(getRateFirstAfterDate(rates, date));
     }
 
-    private Rate getRateNearByDate(List<Rate> rates, LocalDate date) {
+    private Rate getRateFirstAfterDate(List<Rate> rates, LocalDate date) {
         return rates.stream()
                 .filter(rate -> rate.getDate().isAfter(date))
                 .findFirst()

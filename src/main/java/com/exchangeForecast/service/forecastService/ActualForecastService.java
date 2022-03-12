@@ -44,9 +44,10 @@ public class ActualForecastService extends ForecastService {
                 .filter(getRateAfterYearsAndDays(3, 0))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Rate not founded"));
-        return Rate.builder().date(date).currency(getLastRate(rates).getCurrency())
+        return Rate.builder()
+                .date(date)
+                .currency(getLastRate(rates).getCurrency())
                 .exchangeRate(rateThreeYearsAgo.getExchangeRate().add(rateTwoYearsAgo.getExchangeRate()))
                 .build();
-
     }
 }
