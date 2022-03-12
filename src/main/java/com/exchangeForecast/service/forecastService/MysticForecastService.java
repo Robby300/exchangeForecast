@@ -44,8 +44,9 @@ public class MysticForecastService extends ForecastService {
     private Rate getRateByDate(List<Rate> rates, LocalDate date) {
         return rates.stream()
                 .filter(rate -> rate.getDate().isEqual(date))
-                .findAny()
-                .orElse(getRateFirstAfterDate(rates, date));
+                .findFirst()
+                .get();
+                //.orElse(getRateFirstAfterDate(rates, date));
     }
 
     private Rate getRateFirstAfterDate(List<Rate> rates, LocalDate date) {
