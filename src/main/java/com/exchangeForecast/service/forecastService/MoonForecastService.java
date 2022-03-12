@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MysticForecastService extends ForecastService {
+public class MoonForecastService extends ForecastService {
     private final List<LocalDate> threeLastFullMoons = ImmutableList.of(
             LocalDate.of(2022, 1, 18),
             LocalDate.of(2022, 2, 16),
@@ -45,8 +45,7 @@ public class MysticForecastService extends ForecastService {
         return rates.stream()
                 .filter(rate -> rate.getDate().isEqual(date))
                 .findFirst()
-                .get();
-                //.orElse(getRateFirstAfterDate(rates, date));
+                .orElseGet(() -> getRateFirstAfterDate(rates, date));
     }
 
     private Rate getRateFirstAfterDate(List<Rate> rates, LocalDate date) {
