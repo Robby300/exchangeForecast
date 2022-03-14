@@ -1,6 +1,5 @@
 package com.exchangeForecast.parser;
 
-import com.exchangeForecast.command.RateCommand;
 import com.exchangeForecast.domain.Currency;
 import com.exchangeForecast.domain.Rate;
 import com.exchangeForecast.exceptions.NotValidException;

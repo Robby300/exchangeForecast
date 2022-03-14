@@ -1,6 +1,5 @@
 package com.exchangeForecast.service.outputServcie;
 
-import com.exchangeForecast.Main;
 import com.exchangeForecast.bot.Bot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
