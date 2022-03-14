@@ -19,23 +19,23 @@ public class GraphOutputService implements OutputService {
             x.add((double) i);
         }
 
-        Plot plt = Plot.create();
+        Plot plot = Plot.create();
 
         for (List<Rate> rates : listOfRates) {
             List<Double> y = rates.stream().map(rate -> rate.getExchangeRate().doubleValue()).collect(Collectors.toList());
-            plt.plot().add(x, y);
+            plot.plot().add(x, y);
             tittle.append(rates.get(0).getCurrency().toString()).append(", ");
         }
-        plt.title(tittle.toString().trim().substring(0, tittle.length() - 2) + ".");
-        plt.xlabel("Days:");
-        plt.ylabel("Rate:");
-        plt.savefig("/tmp/histogram.png").dpi(200);
+        plot.title(tittle.substring(0, tittle.length() - 2) + ".");
+        plot.xlabel("Days:");
+        plot.ylabel("Rate:");
+        plot.savefig("/tmp/histogram.png").dpi(200);
 
         try {
-            plt.executeSilently();
+            plot.executeSilently();
         } catch (IOException | PythonExecutionException e) {
             e.printStackTrace();
         }
-        sendBotMessageService.sendPhoto(update.getMessage().getChatId().toString(), "histogram.png");
+        sendBotMessageService.sendPhoto(update.getMessage().getChatId().toString());
     }
 }

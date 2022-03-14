@@ -13,7 +13,7 @@ import static org.testng.Assert.*;
 import static org.assertj.core.api.Assertions.assertThat;
 public class LinearRegressionForecastServiceTest {
 
-    List<Rate> mockRates = List.of(
+    final List<Rate> mockRates = List.of(
             new Rate(LocalDate.now().minusDays(3), BigDecimal.valueOf(20), Currency.USD),
             new Rate(LocalDate.now().minusDays(2), BigDecimal.valueOf(30), Currency.USD),
             new Rate(LocalDate.now().minusDays(1), BigDecimal.valueOf(40), Currency.USD)

@@ -32,7 +32,7 @@ public class SendBotMessageServiceImpl implements SendBotMessageService {
     }
 
     @Override
-    public void sendPhoto(String chatId, String message) {
+    public void sendPhoto(String chatId) {
         SendPhoto sendPhoto = new SendPhoto();
         sendPhoto.setChatId(chatId);
         sendPhoto.setPhoto(new InputFile(new File("/tmp/histogram.png")));

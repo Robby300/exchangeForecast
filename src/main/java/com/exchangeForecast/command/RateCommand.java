@@ -21,6 +21,9 @@ import java.time.Period;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Rate {@link Command}.
+ */
 @Setter
 @Getter
 public class RateCommand implements Command {
@@ -51,12 +54,8 @@ public class RateCommand implements Command {
 
         List<List<Rate>> listsOfRates = algorithm.forecast(cash, cdx, period, date);
         logger.info("Данные спрогнозированны алгоритмом:  {}.", algorithm.getClass().getSimpleName());
-        try {
-            outputMethod.output(update, sendBotMessageService, listsOfRates);
-            logger.info("Данные направлены на вывод сервисом: {}.", outputMethod.getClass().getSimpleName());
-        } catch (PythonExecutionException | IOException e) {
-            e.printStackTrace();
-        }
+        outputMethod.output(update, sendBotMessageService, listsOfRates);
+        logger.info("Данные направлены на вывод сервисом: {}.", outputMethod.getClass().getSimpleName());
     }
 
 

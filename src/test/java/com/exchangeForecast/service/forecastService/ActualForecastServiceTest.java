@@ -11,8 +11,8 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ActualForecastServiceTest {
-    ForecastService service = new ActualForecastService();
-    List<Rate> mockRates = List.of(
+    private final ForecastService service = new ActualForecastService();
+    private final List<Rate> mockRates = List.of(
             new Rate(LocalDate.now().minusYears(2), BigDecimal.valueOf(30), Currency.USD),
             new Rate(LocalDate.now().minusYears(3), BigDecimal.valueOf(10), Currency.USD)
     );

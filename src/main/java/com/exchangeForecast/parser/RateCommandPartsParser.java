@@ -37,8 +37,14 @@ public class RateCommandPartsParser {
         String timeLineArgument = messageArgs[3];
         String alg = messageArgs[4];
         String algArgument = messageArgs[5];
-        String output = messageArgs[6];
-        String outputArgument = messageArgs[7];
+        String output = "";
+        String outputArgument = "";
+        if (messageArgs.length > 6) {
+            output = messageArgs[6];
+            outputArgument = messageArgs[7];
+        } else {
+            setOutputMethod(new ListOutputService());
+        }
         String[] cdxLines = cdxArgument.split(",", 5);
         setCdx(Arrays.stream(cdxLines).map(Currency::ofConsoleName).collect(Collectors.toList()));
         switch (timeLine) {

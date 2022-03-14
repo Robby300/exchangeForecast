@@ -15,8 +15,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.within;
 public class MoonForecastServiceTest {
 
 
-    ForecastService service = new MoonForecastService();
-    List<Rate> mockRates = List.of(
+    final ForecastService service = new MoonForecastService();
+    final List<Rate> mockRates = List.of(
             new Rate(LocalDate.of(2021, 12, 19), BigDecimal.valueOf(30), Currency.USD),
             new Rate(LocalDate.of(2022, 1, 18), BigDecimal.valueOf(10), Currency.USD),
             new Rate(LocalDate.of(2022, 2, 16), BigDecimal.valueOf(20), Currency.USD)
