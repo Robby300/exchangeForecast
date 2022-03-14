@@ -15,6 +15,8 @@ import com.exchangeForecast.service.outputServcie.SendBotMessageService;
 import com.github.sh0nk.matplotlib4j.PythonExecutionException;
 import lombok.Getter;
 import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.io.IOException;
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
 @Setter
 @Getter
 public class RateCommand implements Command {
+    private static final Logger logger = LoggerFactory.getLogger(RateCommand.class);
     private List<Currency> cdx;
     private ForecastPeriod period;
     private LocalDate date;
@@ -51,7 +54,6 @@ public class RateCommand implements Command {
         String algArgument = messageArgs[5];
         String output = messageArgs[6];
         String outputArgument = messageArgs[7];
-
         String[] cdxLines = cdxArgument.split(",", 5);
         setCdx(Arrays.stream(cdxLines).map(Currency::ofConsoleName).collect(Collectors.toList()));
         switch (timeLine) {
@@ -87,8 +89,10 @@ public class RateCommand implements Command {
             }
         }
         List<List<Rate>> listsOfRates = algorithm.forecast(cash, cdx, period, date);
+        logger.info("Данные спрогнозированны алгоритмом:  {}." + algorithm.getClass().getSimpleName());
         try {
             outputMethod.output(update, sendBotMessageService, listsOfRates);
+            logger.info("Данные направлены на вывод сервисом: {}.", outputMethod.getClass().getSimpleName());
         } catch (PythonExecutionException | IOException e) {
             e.printStackTrace();
         }

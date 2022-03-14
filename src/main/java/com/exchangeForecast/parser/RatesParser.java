@@ -1,8 +1,11 @@
 package com.exchangeForecast.parser;
 
+import com.exchangeForecast.command.RateCommand;
 import com.exchangeForecast.domain.Currency;
 import com.exchangeForecast.domain.Rate;
 import com.exchangeForecast.exceptions.NotValidException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -16,6 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class RatesParser {
+    private static final Logger logger = LoggerFactory.getLogger(RatesParser.class);
 
     public Rate parseRateRow(String rateRow) {
         String[] rateParts = rateRow.split(";");
@@ -37,6 +41,7 @@ public class RatesParser {
         } catch (IOException e) {
             throw new NotValidException("CSV файл недоступен.");
         }
+        logger.info("Произведён парсинг {} строк.", rates.size());
         return rates;
     }
 }
