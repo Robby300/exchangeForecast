@@ -88,5 +88,4 @@ public class RateCommandPartsParser {
         partsOfCommandInMap.put("outputMethod", outputMethod);
         return partsOfCommandInMap;
     }
-
 }

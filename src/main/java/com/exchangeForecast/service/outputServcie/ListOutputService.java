@@ -12,7 +12,6 @@ public class ListOutputService implements OutputService {
         for (List<Rate> rates: listOfRates) {
             sendBotMessageService.sendMessage(update.getMessage().getChatId().toString(), ratesToString(rates));
         }
-
     }
 
     private String ratesToString(List<Rate> rates) {

@@ -1,6 +1,9 @@
 package com.exchangeForecast.service.outputServcie;
 
+import com.exchangeForecast.Main;
 import com.exchangeForecast.bot.Bot;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
@@ -9,7 +12,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.io.File;
 
 public class SendBotMessageServiceImpl implements SendBotMessageService {
-
+    private static final Logger logger = LoggerFactory.getLogger(SendBotMessageServiceImpl.class);
     private final Bot bot;
 
     public SendBotMessageServiceImpl(Bot bot) {
@@ -26,7 +29,7 @@ public class SendBotMessageServiceImpl implements SendBotMessageService {
         try {
             bot.execute(sendMessage);
         } catch (TelegramApiException e) {
-            //todo add logging to the project.
+            logger.error("Ошибка отправки сообщения.");
             e.printStackTrace();
         }
     }

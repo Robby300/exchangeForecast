@@ -8,16 +8,13 @@ import com.exchangeForecast.parser.RateCommandPartsParser;
 import com.exchangeForecast.service.forecastService.ForecastService;
 import com.exchangeForecast.service.outputServcie.OutputService;
 import com.exchangeForecast.service.outputServcie.SendBotMessageService;
-import com.github.sh0nk.matplotlib4j.PythonExecutionException;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import java.io.IOException;
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.HashMap;
 import java.util.List;
 
