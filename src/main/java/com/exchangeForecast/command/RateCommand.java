@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -42,18 +41,17 @@ public class RateCommand implements Command {
     @Override
     public void execute(Update update) {
         RateCommandPartsParser rateCommandPartsParser = new RateCommandPartsParser();
-        HashMap<String, Object> rateCommandParts = rateCommandPartsParser.getRateCommandParts(update);
-        algorithm = (ForecastService) rateCommandParts.get("algorithm");
-        cdx = (List<Currency>) rateCommandParts.get("cdx");
-        period = (ForecastPeriod) rateCommandParts.get("period");
-        date = (LocalDate) rateCommandParts.get("date");
-        outputMethod = (OutputService) rateCommandParts.get("outputMethod");
+        rateCommandPartsParser.extractRateCommandParts(update);
+        algorithm = rateCommandPartsParser.getAlgorithm();
+        cdx = rateCommandPartsParser.getCdx();
+        period = rateCommandPartsParser.getPeriod();
+        date = rateCommandPartsParser.getDate();
+        outputMethod = rateCommandPartsParser.getOutputMethod();
 
         List<List<Rate>> listsOfRates = algorithm.forecast(cash, cdx, period, date);
         logger.info("Данные спрогнозированны алгоритмом:  {}.", algorithm.getClass().getSimpleName());
         outputMethod.output(update, sendBotMessageService, listsOfRates);
         logger.info("Данные направлены на вывод сервисом: {}.", outputMethod.getClass().getSimpleName());
     }
-
 
 }

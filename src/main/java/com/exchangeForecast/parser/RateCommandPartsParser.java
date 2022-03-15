@@ -10,17 +10,16 @@ import com.exchangeForecast.service.forecastService.MoonForecastService;
 import com.exchangeForecast.service.outputServcie.GraphOutputService;
 import com.exchangeForecast.service.outputServcie.ListOutputService;
 import com.exchangeForecast.service.outputServcie.OutputService;
-import lombok.Setter;
+import lombok.Getter;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Setter
+@Getter
 public class RateCommandPartsParser {
     private List<Currency> cdx;
     private ForecastPeriod period;
@@ -28,8 +27,7 @@ public class RateCommandPartsParser {
     private ForecastService algorithm;
     private OutputService outputMethod;
 
-    public HashMap<String, Object> getRateCommandParts(Update update) {
-        HashMap<String, Object> partsOfCommandInMap = new HashMap<>();
+    public void extractRateCommandParts(Update update) {
         String[] messageArgs = update.getMessage().getText().split("\\s");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         String cdxArgument = messageArgs[1];
@@ -43,49 +41,47 @@ public class RateCommandPartsParser {
             output = messageArgs[6];
             outputArgument = messageArgs[7];
         } else {
-            setOutputMethod(new ListOutputService());
+            outputMethod = new ListOutputService();
         }
         String[] cdxLines = cdxArgument.split(",", 5);
-        setCdx(Arrays.stream(cdxLines).map(Currency::ofConsoleName).collect(Collectors.toList()));
+        cdx = Arrays.stream(cdxLines).map(Currency::ofConsoleName).collect(Collectors.toList());
         switch (timeLine) {
             case "-period":
-                setPeriod(ForecastPeriod.ofName(timeLineArgument));
-                setDate(null);
+                period = ForecastPeriod.ofName(timeLineArgument);
+                date = null;
                 break;
             case "-date":
                 if (timeLineArgument.equals("tomorrow")) {
-                    setDate(LocalDate.now().plusDays(1));
-                } else setDate(LocalDate.parse(timeLineArgument, formatter));
-                setPeriod(null);
+                    date = LocalDate.now().plusDays(1);
+                } else {
+                    date = LocalDate.parse(timeLineArgument, formatter);
+                    period = null;
+                }
         }
         if (alg.equals("-alg")) {
             switch (algArgument) {
                 case "linear":
-                    setAlgorithm(new LinearRegressionForecastService());
+                    algorithm = new LinearRegressionForecastService();
                     break;
                 case "actual":
-                    setAlgorithm(new ActualForecastService());
+                    algorithm = new ActualForecastService();
                     break;
                 case "moon":
-                    setAlgorithm(new MoonForecastService());
+                    algorithm = new MoonForecastService();
             }
         }
         if (output.equals("-output")) {
             switch (outputArgument) {
                 case "list":
-                    setOutputMethod(new ListOutputService());
+                    outputMethod = new ListOutputService();
                     break;
                 case "graph":
                     if (date == null) {
-                        setOutputMethod(new GraphOutputService());
-                    } else throw new NotValidException("График строится только на периоде.");
+                        outputMethod = new GraphOutputService();
+                    } else {
+                        throw new NotValidException("График строится только на периоде.");
+                    }
             }
         }
-        partsOfCommandInMap.put("algorithm", algorithm);
-        partsOfCommandInMap.put("cdx", cdx);
-        partsOfCommandInMap.put("period", period);
-        partsOfCommandInMap.put("date", date);
-        partsOfCommandInMap.put("outputMethod", outputMethod);
-        return partsOfCommandInMap;
     }
 }
