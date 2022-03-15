@@ -1,6 +1,6 @@
 package com.exchangeForecast.service.forecastService;
 
-import com.exchangeForecast.cash.RatesCash;
+import com.exchangeForecast.cash.RatesCache;
 import com.exchangeForecast.domain.Currency;
 import com.exchangeForecast.domain.ForecastPeriod;
 import com.exchangeForecast.domain.Rate;
@@ -15,7 +15,7 @@ public abstract class ForecastService {
 
     abstract List<Rate> forecastByPeriod(List<Rate> rates, ForecastPeriod period);
 
-    public List<List<Rate>> forecast(RatesCash cash, List<Currency> cdx, ForecastPeriod period, LocalDate date) {
+    public List<List<Rate>> forecast(RatesCache cash, List<Currency> cdx, ForecastPeriod period, LocalDate date) {
         List<List<Rate>> listsOfRates = new ArrayList<>();
         for (Currency c : cdx) {
             List<Rate> rates = cash.getRatesByCDX(c);

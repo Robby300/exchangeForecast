@@ -9,7 +9,7 @@ import com.exchangeForecast.parser.RatesParser;
 import java.io.File;
 import java.util.List;
 
-public class RatesCash {
+public class RatesCache {
     private final ExchangeRateLinks links = new ExchangeRateLinks();
     private final RatesParser ratesParser = new RatesParser();
 

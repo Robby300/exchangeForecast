@@ -35,6 +35,7 @@ public class GraphOutputService implements OutputService {
             plot.executeSilently();
         } catch (IOException | PythonExecutionException e) {
             e.printStackTrace();
+            //TODO logger
         }
         sendBotMessageService.sendPhoto(update.getMessage().getChatId().toString());
     }

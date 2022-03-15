@@ -1,6 +1,6 @@
 package com.exchangeForecast.command;
 
-import com.exchangeForecast.cash.RatesCash;
+import com.exchangeForecast.cash.RatesCache;
 import com.exchangeForecast.service.outputServcie.SendBotMessageService;
 import com.google.common.collect.ImmutableMap;
 
@@ -15,7 +15,7 @@ public class CommandContainer {
     private final Command unknownCommand;
 
 
-    public CommandContainer(SendBotMessageService sendBotMessageService, RatesCash cash) {
+    public CommandContainer(SendBotMessageService sendBotMessageService, RatesCache cash) {
 
         commandMap = ImmutableMap.<String, Command>builder()
                 .put(START.getCommandName(), new StartCommand(sendBotMessageService))

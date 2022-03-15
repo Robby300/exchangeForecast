@@ -4,6 +4,8 @@ import com.exchangeForecast.domain.ForecastPeriod;
 import com.exchangeForecast.domain.Rate;
 import com.exchangeForecast.exceptions.IndexNotFoundException;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,6 +16,8 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 public class LinearRegressionForecastService extends ForecastService {
+    private static final Logger logger = LoggerFactory.getLogger(LinearRegressionForecastService.class);
+
     private double xxbar = 0.0;
     private double yybar = 0.0;
     private double xybar = 0.0;
@@ -65,15 +69,16 @@ public class LinearRegressionForecastService extends ForecastService {
         double svar = rss / df;
         double svar1 = svar / xxbar;
         double svar0 = svar / sampleSize + xbar * xbar * svar1;
-        System.out.println("R^2                 = " + R2);
-        System.out.println("std error of beta_1 = " + Math.sqrt(svar1));
-        System.out.println("std error of beta_0 = " + Math.sqrt(svar0));
+
+        logger.info("R^2                 = {}", R2);
+        logger.info("std error of beta_1 = {}", Math.sqrt(svar1));
+        logger.info("std error of beta_0 = {}", Math.sqrt(svar0));
         svar0 = svar * sumSquareDays / (sampleSize * xxbar);
-        System.out.println("std error of beta_0 = " + Math.sqrt(svar0));
-        System.out.println("SSTO = " + yybar);
-        System.out.println("SSE  = " + rss);
-        System.out.println("SSR  = " + ssr);
-        System.out.println(rates.size());
+        logger.info("std error of beta_0 = {}", Math.sqrt(svar0));
+        logger.info("SSTO = {}", yybar);
+        logger.info("SSE  = {}", rss);
+        logger.info("SSR  = {}", ssr);
+        logger.info("sample size = {}",rates.size());
         return new RegressionModel(BigDecimal.valueOf(beta1), BigDecimal.valueOf(beta0));
     }
 

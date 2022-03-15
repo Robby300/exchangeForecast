@@ -1,6 +1,6 @@
 package com.exchangeForecast.command;
 
-import com.exchangeForecast.cash.RatesCash;
+import com.exchangeForecast.cash.RatesCache;
 import com.exchangeForecast.domain.Currency;
 import com.exchangeForecast.domain.ForecastPeriod;
 import com.exchangeForecast.domain.Rate;
@@ -24,24 +24,25 @@ import java.util.List;
 @Getter
 public class RateCommand implements Command {
     private static final Logger logger = LoggerFactory.getLogger(RateCommand.class);
+
     private List<Currency> cdx;
     private ForecastPeriod period;
     private LocalDate date;
     private ForecastService algorithm;
     private OutputService outputMethod;
+
     private final SendBotMessageService sendBotMessageService;
-    private final RatesCash cash;
+    private final RatesCache cash;
 
-
-    public RateCommand(SendBotMessageService sendBotMessageService, RatesCash cash) {
+    public RateCommand(SendBotMessageService sendBotMessageService, RatesCache cash) {
         this.cash = cash;
         this.sendBotMessageService = sendBotMessageService;
     }
 
     @Override
     public void execute(Update update) {
-        RateCommandPartsParser rateCommandPartsParser = new RateCommandPartsParser();
-        rateCommandPartsParser.extractRateCommandParts(update);
+        RateCommandPartsParser rateCommandPartsParser = new RateCommandPartsParser(update);
+        rateCommandPartsParser.extractRateCommandParts();
         algorithm = rateCommandPartsParser.getAlgorithm();
         cdx = rateCommandPartsParser.getCdx();
         period = rateCommandPartsParser.getPeriod();

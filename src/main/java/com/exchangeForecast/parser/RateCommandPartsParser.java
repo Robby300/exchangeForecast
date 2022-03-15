@@ -26,9 +26,14 @@ public class RateCommandPartsParser {
     private LocalDate date;
     private ForecastService algorithm;
     private OutputService outputMethod;
+    private final Update update;
 
-    public void extractRateCommandParts(Update update) {
-        String[] messageArgs = update.getMessage().getText().split("\\s");
+    public RateCommandPartsParser(Update update) {
+        this.update = update;
+    }
+
+    public void extractRateCommandParts() {
+        String[] messageArgs = getMessageArgs();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         String cdxArgument = messageArgs[1];
         String timeLine = messageArgs[2];
@@ -83,5 +88,10 @@ public class RateCommandPartsParser {
                     }
             }
         }
+    }
+
+    private String[] getMessageArgs() {
+        String[] messageArgs = update.getMessage().getText().split("\\s");
+        return messageArgs;
     }
 }

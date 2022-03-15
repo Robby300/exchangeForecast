@@ -38,6 +38,7 @@ public class RatesParser {
             Collections.reverse(rateRows);
             rates = rateRows.stream().map(this::parseRateRow).collect(Collectors.toList());
         } catch (IOException e) {
+            logger.error("CSV файл недоступен.", e);
             throw new NotValidException("CSV файл недоступен.");
         }
         logger.info("Произведён парсинг {} строк.", rates.size());
