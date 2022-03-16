@@ -1,9 +1,10 @@
 package com.exchangeForecast.command;
 
-import com.exchangeForecast.cash.RatesCache;
+import com.exchangeForecast.cash.RatesInMemory;
 import com.exchangeForecast.domain.Currency;
 import com.exchangeForecast.domain.ForecastPeriod;
 import com.exchangeForecast.domain.Rate;
+import com.exchangeForecast.domain.RateCommandParts;
 import com.exchangeForecast.parser.RateCommandPartsParser;
 import com.exchangeForecast.service.forecastService.ForecastService;
 import com.exchangeForecast.service.outputServcie.OutputService;
@@ -25,34 +26,24 @@ import java.util.List;
 public class RateCommand implements Command {
     private static final Logger logger = LoggerFactory.getLogger(RateCommand.class);
 
-    private List<Currency> cdx;
-    private ForecastPeriod period;
-    private LocalDate date;
-    private ForecastService algorithm;
-    private OutputService outputMethod;
+
+    private final RateCommandPartsParser rateCommandPartsParser = new RateCommandPartsParser();
 
     private final SendBotMessageService sendBotMessageService;
-    private final RatesCache cash;
+    private final RatesInMemory cash;
 
-    public RateCommand(SendBotMessageService sendBotMessageService, RatesCache cash) {
+    public RateCommand(SendBotMessageService sendBotMessageService, RatesInMemory cash) {
         this.cash = cash;
         this.sendBotMessageService = sendBotMessageService;
     }
 
     @Override
-    public void execute(Update update) {
-        RateCommandPartsParser rateCommandPartsParser = new RateCommandPartsParser(update);
-        rateCommandPartsParser.extractRateCommandParts();
-        algorithm = rateCommandPartsParser.getAlgorithm();
-        cdx = rateCommandPartsParser.getCdx();
-        period = rateCommandPartsParser.getPeriod();
-        date = rateCommandPartsParser.getDate();
-        outputMethod = rateCommandPartsParser.getOutputMethod();
+    public void execute(String message) {
 
-        List<List<Rate>> listsOfRates = algorithm.forecast(cash, cdx, period, date);
-        logger.info("Данные спрогнозированны алгоритмом:  {}.", algorithm.getClass().getSimpleName());
-        outputMethod.output(update, sendBotMessageService, listsOfRates);
-        logger.info("Данные направлены на вывод сервисом: {}.", outputMethod.getClass().getSimpleName());
+        RateCommandParts rateParts = rateCommandPartsParser.getRateCommandParts(message);
+        List<List<Rate>> listsOfRates = rateParts.getAlgorithm().forecast(cash, rateParts.getCdx(), rateParts.getPeriod(), rateParts.getDate());
+        logger.info("Данные спрогнозированны алгоритмом:  {}.", rateParts.getAlgorithm().getClass().getSimpleName());
+        rateParts.getOutputMethod().output(sendBotMessageService, listsOfRates);
+        logger.info("Данные направлены на вывод сервисом: {}.", rateParts.getOutputMethod().getClass().getSimpleName());
     }
-
 }

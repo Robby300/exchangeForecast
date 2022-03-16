@@ -2,6 +2,7 @@ package com.exchangeForecast.parser;
 
 import com.exchangeForecast.domain.Currency;
 import com.exchangeForecast.domain.ForecastPeriod;
+import com.exchangeForecast.domain.RateCommandParts;
 import com.exchangeForecast.exceptions.NotValidException;
 import com.exchangeForecast.service.forecastService.ActualForecastService;
 import com.exchangeForecast.service.forecastService.ForecastService;
@@ -11,7 +12,6 @@ import com.exchangeForecast.service.outputServcie.GraphOutputService;
 import com.exchangeForecast.service.outputServcie.ListOutputService;
 import com.exchangeForecast.service.outputServcie.OutputService;
 import lombok.Getter;
-import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -21,19 +21,10 @@ import java.util.stream.Collectors;
 
 @Getter
 public class RateCommandPartsParser {
-    private List<Currency> cdx;
-    private ForecastPeriod period;
-    private LocalDate date;
-    private ForecastService algorithm;
-    private OutputService outputMethod;
-    private final Update update;
 
-    public RateCommandPartsParser(Update update) {
-        this.update = update;
-    }
-
-    public void extractRateCommandParts() {
-        String[] messageArgs = getMessageArgs();
+    public RateCommandParts getRateCommandParts(String message) {
+        RateCommandParts parts = new RateCommandParts();
+        String[] messageArgs = message.split("\\s");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         String cdxArgument = messageArgs[1];
         String timeLine = messageArgs[2];
@@ -46,52 +37,48 @@ public class RateCommandPartsParser {
             output = messageArgs[6];
             outputArgument = messageArgs[7];
         } else {
-            outputMethod = new ListOutputService();
+            parts.setOutputMethod(new ListOutputService());
         }
         String[] cdxLines = cdxArgument.split(",", 5);
-        cdx = Arrays.stream(cdxLines).map(Currency::ofConsoleName).collect(Collectors.toList());
+        parts.setCdx(Arrays.stream(cdxLines).map(Currency::ofConsoleName).collect(Collectors.toList()));
         switch (timeLine) {
             case "-period":
-                period = ForecastPeriod.ofName(timeLineArgument);
-                date = null;
+                parts.setPeriod(ForecastPeriod.ofName(timeLineArgument));
+                //date = null;
                 break;
             case "-date":
                 if (timeLineArgument.equals("tomorrow")) {
-                    date = LocalDate.now().plusDays(1);
+                    parts.setDate(LocalDate.now().plusDays(1));
                 } else {
-                    date = LocalDate.parse(timeLineArgument, formatter);
-                    period = null;
+                    parts.setDate(LocalDate.parse(timeLineArgument, formatter));
+                    //period = null;
                 }
         }
         if (alg.equals("-alg")) {
             switch (algArgument) {
                 case "linear":
-                    algorithm = new LinearRegressionForecastService();
+                    parts.setAlgorithm(new LinearRegressionForecastService());
                     break;
                 case "actual":
-                    algorithm = new ActualForecastService();
+                    parts.setAlgorithm(new ActualForecastService());
                     break;
                 case "moon":
-                    algorithm = new MoonForecastService();
+                    parts.setAlgorithm(new MoonForecastService());
             }
         }
         if (output.equals("-output")) {
             switch (outputArgument) {
                 case "list":
-                    outputMethod = new ListOutputService();
+                    parts.setOutputMethod(new ListOutputService());
                     break;
                 case "graph":
-                    if (date == null) {
-                        outputMethod = new GraphOutputService();
+                    if (parts.getDate() == null) {
+                        parts.setOutputMethod(new GraphOutputService());
                     } else {
                         throw new NotValidException("График строится только на периоде.");
                     }
             }
         }
-    }
-
-    private String[] getMessageArgs() {
-        String[] messageArgs = update.getMessage().getText().split("\\s");
-        return messageArgs;
+        return parts;
     }
 }

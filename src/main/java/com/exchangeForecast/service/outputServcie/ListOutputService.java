@@ -8,9 +8,9 @@ import java.util.List;
 public class ListOutputService implements OutputService {
 
     @Override
-    public void output(Update update, SendBotMessageService sendBotMessageService, List<List<Rate>> listOfRates) {
+    public void output(SendBotMessageService sendBotMessageService, List<List<Rate>> listOfRates) {
         for (List<Rate> rates: listOfRates) {
-            sendBotMessageService.sendMessage(update.getMessage().getChatId().toString(), ratesToString(rates));
+            sendBotMessageService.sendMessage(ratesToString(rates));
         }
     }
 

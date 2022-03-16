@@ -18,7 +18,8 @@ public class NoCommand implements Command {
     }
 
     @Override
-    public void execute(Update update) {
-        sendBotMessageService.sendMessage(update.getMessage().getChatId().toString(), NO_MESSAGE);
+    public void execute(String message) {
+        sendBotMessageService.sendMessage(NO_MESSAGE);
     }
+
 }

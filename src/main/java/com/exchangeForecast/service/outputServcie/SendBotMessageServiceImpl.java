@@ -1,11 +1,13 @@
 package com.exchangeForecast.service.outputServcie;
 
 import com.exchangeForecast.bot.Bot;
+import com.exchangeForecast.command.CommandUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
+import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.File;
@@ -13,15 +15,18 @@ import java.io.File;
 public class SendBotMessageServiceImpl implements SendBotMessageService {
     private static final Logger logger = LoggerFactory.getLogger(SendBotMessageServiceImpl.class);
     private final Bot bot;
+    private final Update update;
 
-    public SendBotMessageServiceImpl(Bot bot) {
+    public SendBotMessageServiceImpl(Bot bot, Update update) {
         this.bot = bot;
+        this.update = update;
     }
 
     @Override
-    public void sendMessage(String chatId, String message) {
+    public void sendMessage(String message) {
+        Long chatId = CommandUtils.getChatId(update);
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(chatId);
+        sendMessage.setChatId(chatId.toString());
         sendMessage.enableHtml(true);
         sendMessage.setText(message);
 
@@ -34,9 +39,10 @@ public class SendBotMessageServiceImpl implements SendBotMessageService {
     }
 
     @Override
-    public void sendPhoto(String chatId) {
+    public void sendPhoto() {
+        Long chatId = CommandUtils.getChatId(update);
         SendPhoto sendPhoto = new SendPhoto();
-        sendPhoto.setChatId(chatId);
+        sendPhoto.setChatId(chatId.toString());
         sendPhoto.setPhoto(new InputFile(new File("/tmp/histogram.png")));
         try {
             bot.execute(sendPhoto);

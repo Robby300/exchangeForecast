@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 public class GraphOutputService implements OutputService {
     @Override
-    public void output(Update update, SendBotMessageService sendBotMessageService, List<List<Rate>> listOfRates) {
+    public void output(SendBotMessageService sendBotMessageService, List<List<Rate>> listOfRates) {
         StringBuilder tittle = new StringBuilder("Exchange forecast for ");
         List<Double> x = new ArrayList<>();
         for (int i = 1; i < listOfRates.get(0).size() + 1; i++) {
@@ -37,6 +37,6 @@ public class GraphOutputService implements OutputService {
             e.printStackTrace();
             //TODO logger
         }
-        sendBotMessageService.sendPhoto(update.getMessage().getChatId().toString());
+        sendBotMessageService.sendPhoto();
     }
 }
