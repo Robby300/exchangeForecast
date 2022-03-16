@@ -18,7 +18,6 @@ public final class Bot extends TelegramLongPollingBot {
 
     private final String BOT_TOKEN = System.getenv("BOT_TOKEN");
     private final RatesCache cash = new RatesCache();
-
     private final SendBotMessageService sendBotMessageService = new SendBotMessageServiceImpl(this);
     private final CommandContainer commandContainer = new CommandContainer(sendBotMessageService, cash);
 
@@ -34,16 +33,18 @@ public final class Bot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        if (update.hasMessage() && update.getMessage().hasText()) {
-            String message = update.getMessage().getText().trim();
-            try {
-                String commandIdentifier = message.split("\\s")[0].toLowerCase();
-                commandContainer.retrieveCommand(commandIdentifier).execute(update);
-            } catch (Exception e) {
-                logger.info("{} команда не прошла валидацию.", message);
-                commandContainer.retrieveCommand(NO.getCommandName()).execute(update);
-                throw new NotValidException("Команда не прошла валидацию.");
-            }
+        if (!update.hasMessage() && !update.getMessage().hasText()) {
+            return;
+        }
+        String message = update.getMessage().getText().trim();
+        try {
+            String commandIdentifier = message.split("\\s")[0].toLowerCase();
+            commandContainer.retrieveCommand(commandIdentifier).execute(update);
+        } catch (Exception e) {
+            logger.info("{} команда не прошла валидацию.", message);
+            commandContainer.retrieveCommand(NO.getCommandName()).execute(update);
+            throw new NotValidException("Команда не прошла валидацию.");
         }
     }
 }
+
