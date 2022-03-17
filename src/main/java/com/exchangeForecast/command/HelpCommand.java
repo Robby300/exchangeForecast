@@ -1,11 +1,13 @@
 package com.exchangeForecast.command;
 
 import com.exchangeForecast.service.outputServcie.SendBotMessageService;
-import org.telegram.telegrambots.meta.api.objects.Update;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.exchangeForecast.command.CommandName.*;
 
 public class HelpCommand implements Command {
+    private static final Logger logger = LoggerFactory.getLogger(HelpCommand.class);
     private final SendBotMessageService sendBotMessageService;
 
     public static final String HELP_MESSAGE = String.format("✨<b>Дотупные команды</b>✨\n\n"
@@ -43,5 +45,6 @@ public class HelpCommand implements Command {
     @Override
     public void execute(String message) {
         sendBotMessageService.sendMessage(HELP_MESSAGE);
+        logger.info("message: {}", message);
     }
 }

@@ -7,22 +7,23 @@ import com.exchangeForecast.link.ExchangeRateLinks;
 import com.exchangeForecast.parser.RatesParser;
 import com.google.common.collect.ImmutableMap;
 
-import java.io.File;
 import java.util.List;
 import java.util.Map;
 
 public class RatesInMemory {
     private final ExchangeRateLinks links = new ExchangeRateLinks();
+    private final ImmutableMap<Currency, String> linksByCurrency = links.getLinksByCurrency();
     private final RatesParser ratesParser = new RatesParser();
     private final Map<Currency, List<Rate>> ratesByCurrency = ImmutableMap.<Currency, List<Rate>>builder()
-            .put(Currency.EUR, ratesParser.getRatesFromFile(links.getEurLink()))
-            .put(Currency.USD, ratesParser.getRatesFromFile(links.getUsdLink()))
-            .put(Currency.TRY, ratesParser.getRatesFromFile(links.getTryLink()))
-            .put(Currency.AMD, ratesParser.getRatesFromFile(links.getAmdLink()))
-            .put(Currency.BGN, ratesParser.getRatesFromFile(links.getBgnLink()))
+            .put(Currency.EUR, ratesParser.getRatesFromFile(linksByCurrency.get(Currency.EUR)))
+            .put(Currency.USD, ratesParser.getRatesFromFile(linksByCurrency.get(Currency.USD)))
+            .put(Currency.TRY, ratesParser.getRatesFromFile(linksByCurrency.get(Currency.TRY)))
+            .put(Currency.AMD, ratesParser.getRatesFromFile(linksByCurrency.get(Currency.AMD)))
+            .put(Currency.BGN, ratesParser.getRatesFromFile(linksByCurrency.get(Currency.BGN)))
             .build();
 
     public List<Rate> getRatesByCDX(Currency currency) {
+
         try {
             return ratesByCurrency.get(currency);
         } catch (Exception e) {

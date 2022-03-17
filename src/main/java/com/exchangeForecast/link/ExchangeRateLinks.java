@@ -1,31 +1,20 @@
 package com.exchangeForecast.link;
 
+import com.exchangeForecast.domain.Currency;
+import com.google.common.collect.ImmutableMap;
+import lombok.Getter;
+
+@Getter
 public class ExchangeRateLinks {
-    static final String AMD_RATE_FILE = "files/AMD_F01_02_2005_T05_03_2022.csv";
-    static final String BGN_RATE_FILE = "files/BGN_F01_02_2005_T05_03_2022.csv";
-    static final String EUR_RATE_FILE = "files/EUR_F01_02_2005_T05_03_2022.csv";
-    static final String TRY_RATE_FILE = "files/TRY_F01_02_2005_T05_03_2022.csv";
-    static final String USD_RATE_FILE = "files/USD_F01_02_2005_T05_03_2022.csv";
+    private final ImmutableMap<Currency, String> LinksByCurrency;
 
-    public String getAmdLink() {
-        return AMD_RATE_FILE;
+    public ExchangeRateLinks() {
+        LinksByCurrency = ImmutableMap.<Currency, String>builder()
+                .put(Currency.EUR, "files/EUR_F01_02_2005_T05_03_2022.csv")
+                .put(Currency.USD, "files/USD_F01_02_2005_T05_03_2022.csv")
+                .put(Currency.TRY, "files/TRY_F01_02_2005_T05_03_2022.csv")
+                .put(Currency.AMD, "files/AMD_F01_02_2005_T05_03_2022.csv")
+                .put(Currency.BGN, "files/BGN_F01_02_2005_T05_03_2022.csv")
+                .build();
     }
-
-    public String getBgnLink() {
-        return BGN_RATE_FILE;
-    }
-
-    public String getEurLink() {
-        return EUR_RATE_FILE;
-    }
-
-    public String getTryLink() {
-        return TRY_RATE_FILE;
-    }
-
-    public String getUsdLink() {
-        return USD_RATE_FILE;
-    }
-
-
 }

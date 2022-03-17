@@ -2,10 +2,8 @@ package com.exchangeForecast.domain;
 
 import com.exchangeForecast.service.forecastService.ForecastService;
 import com.exchangeForecast.service.outputServcie.OutputService;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,9 +11,9 @@ import java.util.List;
 @Getter
 @Setter
 public class RateCommandParts {
-        private List<Currency> cdx;
-        private ForecastPeriod period;
-        private LocalDate date;
-        private ForecastService algorithm;
-        private OutputService outputMethod;
+    private List<Currency> cdx;
+    private ForecastPeriod period;
+    private LocalDate date;
+    private ForecastService algorithm;
+    private OutputService outputMethod;
 }

@@ -5,22 +5,19 @@ import com.exchangeForecast.domain.ForecastPeriod;
 import com.exchangeForecast.domain.RateCommandParts;
 import com.exchangeForecast.exceptions.NotValidException;
 import com.exchangeForecast.service.forecastService.ActualForecastService;
-import com.exchangeForecast.service.forecastService.ForecastService;
 import com.exchangeForecast.service.forecastService.LinearRegressionForecastService;
 import com.exchangeForecast.service.forecastService.MoonForecastService;
 import com.exchangeForecast.service.outputServcie.GraphOutputService;
 import com.exchangeForecast.service.outputServcie.ListOutputService;
-import com.exchangeForecast.service.outputServcie.OutputService;
 import lombok.Getter;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-public class RateCommandPartsParser {
+public class RateCommandPartsFactory {
 
     public RateCommandParts getRateCommandParts(String message) {
         RateCommandParts parts = new RateCommandParts();
