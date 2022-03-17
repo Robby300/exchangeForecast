@@ -5,7 +5,6 @@ import com.exchangeForecast.domain.Rate;
 import java.util.List;
 
 public class ListOutputService implements OutputService {
-
     @Override
     public void output(SendBotMessageService sendBotMessageService, List<List<Rate>> listOfRates) {
         for (List<Rate> rates : listOfRates) {

@@ -7,7 +7,6 @@ import com.exchangeForecast.exceptions.RateNotFound;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
 public class ActualForecastService extends ForecastService {
 
@@ -15,24 +14,9 @@ public class ActualForecastService extends ForecastService {
     public List<Rate> forecastByPeriod(List<Rate> rates, ForecastPeriod period) {
         List<Rate> resultRates = new ArrayList<>();
         for (int i = 0; i < period.getDaysCount(); i++) {
-            Rate rateTwoYearsAgo = rates.stream()
-                    .filter(getRateAfterYearsAndDays(2, i))
-                    .findFirst()
-                    .orElseThrow(() -> new RuntimeException("Rate not founded"));
-            Rate rateThreeYearsAgo = rates.stream()
-                    .filter(getRateAfterYearsAndDays(3, i))
-                    .findFirst()
-                    .orElseThrow(() -> new RuntimeException("Rate not founded"));
-            Rate forecastRate = Rate.builder().date(LocalDate.now().plusDays(1 + i)).currency(getLastRate(rates).getCurrency())
-                    .exchangeRate(rateThreeYearsAgo.getExchangeRate().add(rateTwoYearsAgo.getExchangeRate()))
-                    .build();
-            resultRates.add(forecastRate);
+            resultRates.add(forecastByDate(rates, LocalDate.now().plusDays(1 + i)));
         }
         return resultRates;
-    }
-
-    private Predicate<Rate> getRateAfterYearsAndDays(int years, int days) {
-        return rate -> rate.getDate().isAfter(LocalDate.now().minusYears(years).plusDays(days));
     }
 
     private Rate getRateFirstAfterDate(List<Rate> rates, LocalDate date) {

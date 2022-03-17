@@ -18,16 +18,13 @@ import java.util.stream.IntStream;
 public class LinearRegressionForecastService extends ForecastService {
     private static final Logger logger = LoggerFactory.getLogger(LinearRegressionForecastService.class);
 
-    private RegressionModel model;
     private double xxbar = 0.0;
-    private double yybar = 0.0;
     private double xybar = 0.0;
 
     private void computeSummaryStatistics(int dataSize, int[] days,
                                           double[] exchangeRates, double xbar, double ybar) {
         for (int i = 0; i < dataSize; i++) {
             xxbar += (days[i] - xbar) * (days[i] - xbar);
-            yybar += (exchangeRates[i] - ybar) * (exchangeRates[i] - ybar);
             xybar += (days[i] - xbar) * (exchangeRates[i] - ybar);
         }
     }
@@ -42,11 +39,10 @@ public class LinearRegressionForecastService extends ForecastService {
         int sampleSize = rates.size();
         int[] days;
         double[] exchangeRates;
-        double sumDays, sumExchangeRates, sumSquareDays;
+        double sumDays, sumExchangeRates;
         days = IntStream.range(0, rates.size()).toArray();
         exchangeRates = rates.stream().mapToDouble(rate -> rate.getExchangeRate().doubleValue()).toArray();
         sumDays = Arrays.stream(days).sum();
-        sumSquareDays = Arrays.stream(days).map(day -> day * day).sum();
         sumExchangeRates = Arrays.stream(exchangeRates).sum();
         double xbar = sumDays / sampleSize;
         double ybar = sumExchangeRates / sampleSize;
@@ -54,27 +50,6 @@ public class LinearRegressionForecastService extends ForecastService {
         double beta1 = xybar / xxbar;
         double beta0 = ybar - beta1 * xbar;
         logger.info("model of linear regression   = {} * days + {}", beta1, beta0);
-        int df = sampleSize - 2;
-        double rss = 0.0;
-        double ssr = 0.0;
-        for (int i = 0; i < sampleSize; i++) {
-            double fit = beta1 * days[i] + beta0;
-            rss += (fit - exchangeRates[i]) * (fit - exchangeRates[i]);
-            ssr += (fit - ybar) * (fit - ybar);
-        }
-        double R2 = ssr / yybar;
-        double svar = rss / df;
-        double svar1 = svar / xxbar;
-        double svar0 = svar / sampleSize + xbar * xbar * svar1;
-        logger.info("R^2                 = {}", R2);
-        logger.info("std error of beta_1 = {}", Math.sqrt(svar1));
-        logger.info("std error of beta_0 = {}", Math.sqrt(svar0));
-        svar0 = svar * sumSquareDays / (sampleSize * xxbar);
-        logger.info("std error of beta_0 = {}", Math.sqrt(svar0));
-        logger.info("SSTO = {}", yybar);
-        logger.info("SSE  = {}", rss);
-        logger.info("SSR  = {}", ssr);
-        logger.info("sample size = {}",rates.size());
         return new RegressionModel(BigDecimal.valueOf(beta1), BigDecimal.valueOf(beta0));
     }
 
@@ -92,8 +67,10 @@ public class LinearRegressionForecastService extends ForecastService {
     @Override
     public List<Rate> forecastByPeriod(List<Rate> rates, ForecastPeriod period) {
         List<Rate> resultRates = new ArrayList<>();
+        RegressionModel model = getRegressionModel(getLastMonthSubList(rates));
+        List<Rate> lastMonthSubList = getLastMonthSubList(rates);
         for (int i = 0; i < period.getDaysCount(); i++) {
-            resultRates.add(forecastByDate(rates, LocalDate.now().plusDays(i + 1)));
+            resultRates.add(getForecastRateByModel(LocalDate.now().plusDays(i + 1), lastMonthSubList, model));
         }
         return resultRates;
     }
@@ -101,7 +78,11 @@ public class LinearRegressionForecastService extends ForecastService {
     @Override
     public Rate forecastByDate(List<Rate> rates, LocalDate date) {
         List<Rate> lastMonthRates = getLastMonthSubList(rates);
-        model = getRegressionModel(lastMonthRates);
+        RegressionModel model = getRegressionModel(lastMonthRates);
+        return getForecastRateByModel(date, lastMonthRates, model);
+    }
+
+    private Rate getForecastRateByModel(LocalDate date, List<Rate> lastMonthRates, RegressionModel model) {
         LocalDate lastRateDate = getLastRate(lastMonthRates).getDate();
         BigDecimal daysBetweenFirstRateAndTargetDate = getDaysBetween(date, lastRateDate).add(BigDecimal.valueOf(lastMonthRates.size()));
         BigDecimal forecastExchangeRate = model.betta1.multiply(daysBetweenFirstRateAndTargetDate).add(model.betta0);

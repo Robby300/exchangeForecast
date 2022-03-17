@@ -14,7 +14,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import static com.exchangeForecast.command.CommandName.NO;
 
 public final class Bot extends TelegramLongPollingBot {
-
     private static final Logger logger = LoggerFactory.getLogger(Bot.class);
 
     private final String BOT_TOKEN = System.getenv("BOT_TOKEN");

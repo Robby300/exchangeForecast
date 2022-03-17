@@ -26,7 +26,7 @@ public class RatesParser {
         return Rate.builder()
                 .date(LocalDate.parse(rateParts[1], formatter))
                 .exchangeRate(new BigDecimal(rateParts[2].substring(1, rateParts[2].length() - 2).replace(",", "."))
-                        .divide(BigDecimal.valueOf(Double.parseDouble(rateParts[0])), RoundingMode.HALF_DOWN))
+                        .divide(BigDecimal.valueOf(Double.parseDouble(rateParts[0])), RoundingMode.HALF_UP))
                 .currency(Currency.ofDbName(rateParts[3]))
                 .build();
     }

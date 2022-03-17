@@ -10,6 +10,8 @@ import com.exchangeForecast.service.forecastService.MoonForecastService;
 import com.exchangeForecast.service.outputServcie.GraphOutputService;
 import com.exchangeForecast.service.outputServcie.ListOutputService;
 import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 
 @Getter
 public class RateCommandPartsFactory {
+    private static final Logger logger = LoggerFactory.getLogger(RateCommandPartsFactory.class);
 
     public RateCommandParts getRateCommandParts(String message) {
         RateCommandParts parts = new RateCommandParts();
@@ -41,14 +44,12 @@ public class RateCommandPartsFactory {
         switch (timeLine) {
             case "-period":
                 parts.setPeriod(ForecastPeriod.ofName(timeLineArgument));
-                //date = null;
                 break;
             case "-date":
                 if (timeLineArgument.equals("tomorrow")) {
                     parts.setDate(LocalDate.now().plusDays(1));
                 } else {
                     parts.setDate(LocalDate.parse(timeLineArgument, formatter));
-                    //period = null;
                 }
         }
         if (alg.equals("-alg")) {
@@ -72,6 +73,7 @@ public class RateCommandPartsFactory {
                     if (parts.getDate() == null) {
                         parts.setOutputMethod(new GraphOutputService());
                     } else {
+                        logger.info("График строится только на периоде.");
                         throw new NotValidException("График строится только на периоде.");
                     }
             }

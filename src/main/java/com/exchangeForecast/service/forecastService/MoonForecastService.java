@@ -12,12 +12,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MoonForecastService extends ForecastService {
+
     private final List<LocalDate> threeLastFullMoons = ImmutableList.of(
             LocalDate.of(2022, 1, 18),
             LocalDate.of(2022, 2, 16),
             LocalDate.of(2021, 12, 19)
     );
 
+    @Override
+    public Rate forecastByDate(List<Rate> rates, LocalDate date) {
+        BigDecimal sumOfThreeRatesOfFullMoon = new BigDecimal(0);
+        for (LocalDate localDate : threeLastFullMoons) {
+            sumOfThreeRatesOfFullMoon = sumOfThreeRatesOfFullMoon
+                    .add(getRateByDate(rates, localDate).getExchangeRate());
+        }
+        BigDecimal forecastRate = sumOfThreeRatesOfFullMoon.divide(BigDecimal.valueOf(3), RoundingMode.HALF_DOWN);
+        return Rate.builder()
+                .date(date)
+                .exchangeRate(forecastRate)
+                .currency(getLastRate(rates).getCurrency())
+                .build();
+    }
+
+    @Override
     public List<Rate> forecastByPeriod(List<Rate> rates, ForecastPeriod period) {
         List<Rate> resultRates = new ArrayList<>();
         Rate tomorrowRate = forecastByDate(rates, LocalDate.now().plusDays(1));
@@ -35,9 +52,9 @@ public class MoonForecastService extends ForecastService {
     }
 
     private BigDecimal getRandom(double min, double max) {
-        double random = Math.random();      // random     == 0.52796 (for example)
-        double range = max - min;           // range      == 0.2
-        double adjustment = range * random; // adjustment == 0.105592
+        double random = Math.random();
+        double range = max - min;
+        double adjustment = range * random;
         return new BigDecimal(min + adjustment);
     }
 
@@ -53,19 +70,5 @@ public class MoonForecastService extends ForecastService {
                 .filter(rate -> rate.getDate().isAfter(date))
                 .findFirst()
                 .orElseThrow(() -> new RateNotFound("Данных после полнолуния нет"));
-    }
-
-    public Rate forecastByDate(List<Rate> rates, LocalDate date) {
-        BigDecimal sumOfThreeRatesOfFullMoon = new BigDecimal(0);
-        for (LocalDate localDate : threeLastFullMoons) {
-            sumOfThreeRatesOfFullMoon = sumOfThreeRatesOfFullMoon
-                    .add(getRateByDate(rates, localDate).getExchangeRate());
-        }
-        BigDecimal forecastRate = sumOfThreeRatesOfFullMoon.divide(BigDecimal.valueOf(3), RoundingMode.HALF_DOWN);
-        return Rate.builder()
-                .date(date)
-                .exchangeRate(forecastRate)
-                .currency(getLastRate(rates).getCurrency())
-                .build();
     }
 }
