@@ -1,6 +1,6 @@
 package com.exchangeForecast.command;
 
-import com.exchangeForecast.service.outputServcie.SendBotMessageService;
+import com.exchangeForecast.service.outputServcie.SendMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,17 +9,17 @@ import org.slf4j.LoggerFactory;
  */
 public class StopCommand implements Command {
     private static final Logger logger = LoggerFactory.getLogger(StopCommand.class);
-    private final SendBotMessageService sendBotMessageService;
+    private final SendMessageService sendMessageService;
 
     public static final String STOP_MESSAGE = "До свидания \uD83D\uDE1F.";
 
-    public StopCommand(SendBotMessageService sendBotMessageService) {
-        this.sendBotMessageService = sendBotMessageService;
+    public StopCommand(SendMessageService sendMessageService) {
+        this.sendMessageService = sendMessageService;
     }
 
     @Override
     public void execute(String message) {
-        sendBotMessageService.sendMessage(STOP_MESSAGE);
+        sendMessageService.sendMessage(STOP_MESSAGE);
         logger.info("message: {}", message);
     }
 }

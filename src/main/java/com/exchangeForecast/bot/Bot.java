@@ -4,8 +4,8 @@ import com.exchangeForecast.cash.RatesInMemory;
 import com.exchangeForecast.command.CommandContainer;
 import com.exchangeForecast.command.CommandUtils;
 import com.exchangeForecast.exceptions.NotValidException;
-import com.exchangeForecast.service.outputServcie.SendBotMessageService;
-import com.exchangeForecast.service.outputServcie.SendBotMessageServiceImpl;
+import com.exchangeForecast.service.outputServcie.SendMessageService;
+import com.exchangeForecast.service.outputServcie.SendMessageServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -35,8 +35,8 @@ public final class Bot extends TelegramLongPollingBot {
             return;
         }
         String message = CommandUtils.getMessage(update);
-        SendBotMessageService sendBotMessageService = new SendBotMessageServiceImpl(this, update);
-        CommandContainer commandContainer = new CommandContainer(sendBotMessageService, cash);
+        SendMessageService sendMessageService = new SendMessageServiceImpl(this, update);
+        CommandContainer commandContainer = new CommandContainer(sendMessageService, cash);
         try {
             String commandIdentifier = message.split("\\s")[0].toLowerCase();
             commandContainer.retrieveCommand(commandIdentifier).execute(message);

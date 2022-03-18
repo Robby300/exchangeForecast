@@ -1,6 +1,6 @@
 package com.exchangeForecast.command;
 
-import com.exchangeForecast.service.outputServcie.SendBotMessageService;
+import com.exchangeForecast.service.outputServcie.SendMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,7 +8,7 @@ import static com.exchangeForecast.command.CommandName.*;
 
 public class HelpCommand implements Command {
     private static final Logger logger = LoggerFactory.getLogger(HelpCommand.class);
-    private final SendBotMessageService sendBotMessageService;
+    private final SendMessageService sendMessageService;
 
     public static final String HELP_MESSAGE = String.format("✨<b>Дотупные команды</b>✨\n\n"
                     + "<b>Начать\\закончить работу с ботом</b>\n"
@@ -38,13 +38,13 @@ public class HelpCommand implements Command {
                     + "       graph",
             START.getCommandName(), STOP.getCommandName(), HELP.getCommandName(), RATE.getCommandName());
 
-    public HelpCommand(SendBotMessageService sendBotMessageService) {
-        this.sendBotMessageService = sendBotMessageService;
+    public HelpCommand(SendMessageService sendMessageService) {
+        this.sendMessageService = sendMessageService;
     }
 
     @Override
     public void execute(String message) {
-        sendBotMessageService.sendMessage(HELP_MESSAGE);
+        sendMessageService.sendMessage(HELP_MESSAGE);
         logger.info("message: {}", message);
     }
 }

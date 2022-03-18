@@ -1,6 +1,6 @@
 package com.exchangeForecast.command;
 
-import com.exchangeForecast.service.outputServcie.SendBotMessageService;
+import com.exchangeForecast.service.outputServcie.SendMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,18 +9,18 @@ import org.slf4j.LoggerFactory;
  */
 public class NoCommand implements Command {
     private static final Logger logger = LoggerFactory.getLogger(NoCommand.class);
-    private final SendBotMessageService sendBotMessageService;
+    private final SendMessageService sendMessageService;
 
     public static final String NO_MESSAGE = "Я поддерживаю команды.\n"
             + "Чтобы посмотреть список команд введите help";
 
-    public NoCommand(SendBotMessageService sendBotMessageService) {
-        this.sendBotMessageService = sendBotMessageService;
+    public NoCommand(SendMessageService sendMessageService) {
+        this.sendMessageService = sendMessageService;
     }
 
     @Override
     public void execute(String message) {
-        sendBotMessageService.sendMessage(NO_MESSAGE);
+        sendMessageService.sendMessage(NO_MESSAGE);
         logger.info("message: {}", message);
     }
 

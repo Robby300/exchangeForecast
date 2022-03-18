@@ -4,7 +4,8 @@ import com.exchangeForecast.cash.RatesInMemory;
 import com.exchangeForecast.domain.Rate;
 import com.exchangeForecast.domain.RateCommandParts;
 import com.exchangeForecast.parser.RateCommandPartsFactory;
-import com.exchangeForecast.service.outputServcie.SendBotMessageService;
+import com.exchangeForecast.service.outputServcie.OutputMethod;
+import com.exchangeForecast.service.outputServcie.SendMessageService;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
@@ -21,20 +22,21 @@ public class RateCommand implements Command {
     private static final Logger logger = LoggerFactory.getLogger(RateCommand.class);
 
     private final RateCommandPartsFactory rateCommandPartsFactory = new RateCommandPartsFactory();
-    private final SendBotMessageService sendBotMessageService;
+    private final SendMessageService sendMessageService;
     private final RatesInMemory cash;
 
-    public RateCommand(SendBotMessageService sendBotMessageService, RatesInMemory cash) {
+    public RateCommand(SendMessageService sendMessageService, RatesInMemory cash) {
         this.cash = cash;
-        this.sendBotMessageService = sendBotMessageService;
+        this.sendMessageService = sendMessageService;
     }
 
     @Override
     public void execute(String message) {
         RateCommandParts rateParts = rateCommandPartsFactory.getRateCommandParts(message);
+        OutputMethod method = rateParts.getOutputMethod();
         List<List<Rate>> listsOfRates = rateParts.getAlgorithm().forecast(cash, rateParts.getCdx(), rateParts.getPeriod(), rateParts.getDate());
         logger.info("Данные спрогнозированны алгоритмом:  {}.", rateParts.getAlgorithm().getClass().getSimpleName());
-        rateParts.getOutputMethod().output(sendBotMessageService, listsOfRates);
+        method.output(sendMessageService, listsOfRates);
         logger.info("Данные направлены на вывод сервисом: {}.", rateParts.getOutputMethod().getClass().getSimpleName());
     }
 }

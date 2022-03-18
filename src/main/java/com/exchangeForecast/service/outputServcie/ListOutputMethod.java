@@ -4,11 +4,11 @@ import com.exchangeForecast.domain.Rate;
 
 import java.util.List;
 
-public class ListOutputService implements OutputService {
+public class ListOutputMethod implements OutputMethod {
     @Override
-    public void output(SendBotMessageService sendBotMessageService, List<List<Rate>> listOfRates) {
+    public void output(SendMessageService sendMessageService, List<List<Rate>> listOfRates) {
         for (List<Rate> rates : listOfRates) {
-            sendBotMessageService.sendMessage(ratesToString(rates));
+            sendMessageService.sendMessage(ratesToString(rates));
         }
     }
 

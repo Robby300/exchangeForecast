@@ -12,12 +12,12 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.File;
 
-public class SendBotMessageServiceImpl implements SendBotMessageService {
-    private static final Logger logger = LoggerFactory.getLogger(SendBotMessageServiceImpl.class);
+public class SendMessageServiceImpl implements SendMessageService {
+    private static final Logger logger = LoggerFactory.getLogger(SendMessageServiceImpl.class);
     private final Bot bot;
     private final Update update;
 
-    public SendBotMessageServiceImpl(Bot bot, Update update) {
+    public SendMessageServiceImpl(Bot bot, Update update) {
         this.bot = bot;
         this.update = update;
     }

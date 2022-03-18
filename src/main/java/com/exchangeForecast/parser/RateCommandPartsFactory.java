@@ -7,8 +7,8 @@ import com.exchangeForecast.exceptions.NotValidException;
 import com.exchangeForecast.service.forecastService.ActualForecastService;
 import com.exchangeForecast.service.forecastService.LinearRegressionForecastService;
 import com.exchangeForecast.service.forecastService.MoonForecastService;
-import com.exchangeForecast.service.outputServcie.GraphOutputService;
-import com.exchangeForecast.service.outputServcie.ListOutputService;
+import com.exchangeForecast.service.outputServcie.GraphOutputMethod;
+import com.exchangeForecast.service.outputServcie.ListOutputMethod;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +37,7 @@ public class RateCommandPartsFactory {
             output = messageArgs[6];
             outputArgument = messageArgs[7];
         } else {
-            parts.setOutputMethod(new ListOutputService());
+            parts.setOutputMethod(new ListOutputMethod());
         }
         String[] cdxLines = cdxArgument.split(",", 5);
         parts.setCdx(Arrays.stream(cdxLines).map(Currency::ofConsoleName).collect(Collectors.toList()));
@@ -67,11 +67,11 @@ public class RateCommandPartsFactory {
         if (output.equals("-output")) {
             switch (outputArgument) {
                 case "list":
-                    parts.setOutputMethod(new ListOutputService());
+                    parts.setOutputMethod(new ListOutputMethod());
                     break;
                 case "graph":
                     if (parts.getDate() == null) {
-                        parts.setOutputMethod(new GraphOutputService());
+                        parts.setOutputMethod(new GraphOutputMethod());
                     } else {
                         logger.info("График строится только на периоде.");
                         throw new NotValidException("График строится только на периоде.");

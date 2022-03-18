@@ -1,6 +1,6 @@
 package com.exchangeForecast.command;
 
-import com.exchangeForecast.service.outputServcie.SendBotMessageService;
+import com.exchangeForecast.service.outputServcie.SendMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,18 +9,18 @@ import org.slf4j.LoggerFactory;
  */
 public class StartCommand implements Command {
     private static final Logger logger = LoggerFactory.getLogger(StartCommand.class);
-    private final SendBotMessageService sendBotMessageService;
+    private final SendMessageService sendMessageService;
 
     public final static String START_MESSAGE = "Привет. Я bot. Я буду прогнозировать курсы валют, " +
             "Я еще маленький и только учусь.";
 
-    public StartCommand(SendBotMessageService sendBotMessageService) {
-        this.sendBotMessageService = sendBotMessageService;
+    public StartCommand(SendMessageService sendMessageService) {
+        this.sendMessageService = sendMessageService;
     }
 
     @Override
     public void execute(String message) {
-        sendBotMessageService.sendMessage(START_MESSAGE);
+        sendMessageService.sendMessage(START_MESSAGE);
         logger.info("message: {}", message);
     }
 }

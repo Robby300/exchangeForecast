@@ -1,7 +1,7 @@
 package com.exchangeForecast.command;
 
 import com.exchangeForecast.cash.RatesInMemory;
-import com.exchangeForecast.service.outputServcie.SendBotMessageService;
+import com.exchangeForecast.service.outputServcie.SendMessageService;
 import com.google.common.collect.ImmutableMap;
 
 import static com.exchangeForecast.command.CommandName.*;
@@ -15,17 +15,17 @@ public class CommandContainer {
     private final Command unknownCommand;
 
 
-    public CommandContainer(SendBotMessageService sendBotMessageService, RatesInMemory cash) {
+    public CommandContainer(SendMessageService sendMessageService, RatesInMemory cash) {
 
         commandMap = ImmutableMap.<String, Command>builder()
-                .put(START.getCommandName(), new StartCommand(sendBotMessageService))
-                .put(STOP.getCommandName(), new StopCommand(sendBotMessageService))
-                .put(HELP.getCommandName(), new HelpCommand(sendBotMessageService))
-                .put(NO.getCommandName(), new NoCommand(sendBotMessageService))
-                .put(RATE.getCommandName(), new RateCommand(sendBotMessageService, cash))
+                .put(START.getCommandName(), new StartCommand(sendMessageService))
+                .put(STOP.getCommandName(), new StopCommand(sendMessageService))
+                .put(HELP.getCommandName(), new HelpCommand(sendMessageService))
+                .put(NO.getCommandName(), new NoCommand(sendMessageService))
+                .put(RATE.getCommandName(), new RateCommand(sendMessageService, cash))
                 .build();
 
-        unknownCommand = new UnknownCommand(sendBotMessageService);
+        unknownCommand = new UnknownCommand(sendMessageService);
     }
 
     public Command retrieveCommand(String commandIdentifier) {

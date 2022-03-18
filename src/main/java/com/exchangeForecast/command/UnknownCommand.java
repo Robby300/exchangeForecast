@@ -1,6 +1,6 @@
 package com.exchangeForecast.command;
 
-import com.exchangeForecast.service.outputServcie.SendBotMessageService;
+import com.exchangeForecast.service.outputServcie.SendMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,15 +9,15 @@ public class UnknownCommand implements Command {
 
     public static final String UNKNOWN_MESSAGE = "Не понимаю вас \uD83D\uDE1F, напишите help чтобы узнать что я понимаю.";
 
-    private final SendBotMessageService sendBotMessageService;
+    private final SendMessageService sendMessageService;
 
-    public UnknownCommand(SendBotMessageService sendBotMessageService) {
-        this.sendBotMessageService = sendBotMessageService;
+    public UnknownCommand(SendMessageService sendMessageService) {
+        this.sendMessageService = sendMessageService;
     }
 
     @Override
     public void execute(String message) {
-        sendBotMessageService.sendMessage(UNKNOWN_MESSAGE);
+        sendMessageService.sendMessage(UNKNOWN_MESSAGE);
         logger.info("message: {}", message);
     }
 }

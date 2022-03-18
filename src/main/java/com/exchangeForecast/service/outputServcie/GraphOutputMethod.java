@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class GraphOutputService implements OutputService {
-    private static final Logger logger = LoggerFactory.getLogger(GraphOutputService.class);
+public class GraphOutputMethod implements OutputMethod {
+    private static final Logger logger = LoggerFactory.getLogger(GraphOutputMethod.class);
     @Override
-    public void output(SendBotMessageService sendBotMessageService, List<List<Rate>> listOfRates) {
+    public void output(SendMessageService sendMessageService, List<List<Rate>> listOfRates) {
         StringBuilder tittle = new StringBuilder("Exchange forecast for ");
         List<Double> x = new ArrayList<>();
         for (int i = 1; i < listOfRates.get(0).size() + 1; i++) {
@@ -36,6 +36,6 @@ public class GraphOutputService implements OutputService {
         } catch (IOException | PythonExecutionException e) {
             logger.warn("Plot maker error", e);
         }
-        sendBotMessageService.sendPhoto();
+        sendMessageService.sendPhoto();
     }
 }

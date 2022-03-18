@@ -3,7 +3,7 @@ package com.exchangeForecast.service.outputServcie;
 /**
  * Service for sending messages via telegram-bot.
  */
-public interface SendBotMessageService {
+public interface SendMessageService {
 
     /**
      * Send message via telegram bot.

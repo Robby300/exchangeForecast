@@ -1,7 +1,7 @@
 package com.exchangeForecast.domain;
 
 import com.exchangeForecast.service.forecastService.ForecastService;
-import com.exchangeForecast.service.outputServcie.OutputService;
+import com.exchangeForecast.service.outputServcie.OutputMethod;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,5 +15,5 @@ public class RateCommandParts {
     private ForecastPeriod period;
     private LocalDate date;
     private ForecastService algorithm;
-    private OutputService outputMethod;
+    private OutputMethod outputMethod;
 }
